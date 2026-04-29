@@ -1,0 +1,75 @@
+---
+title: ""
+pagetitle: "Veri Güvenliği Rehberi"
+toc: false
+page-layout: full
+---
+
+::: {.hero-banner}
+# 🔐 Veri Güvenliği
+
+### Klinik araştırma verisinde kimliksizleştirme ve güvenlik
+:::
+
+## 👋 Bu Rehber Kimin İçin?
+
+Bu rehber, **gerçek hasta verisi ile çalışan** araştırmacılar içindir. Hedefi: hassas veriyi etik, yasal ve teknik olarak doğru biçimde işlemek için pratik bilgi vermek.
+
+Hedef kitle:
+
+- Saha epidemiyolojisi ve klinik araştırmacıları
+- Tez aşamasındaki uzmanlık ve doktora öğrencileri
+- Çok merkezli çalışmalarda veri yöneten ekipler
+- Etik kurul başvurusu hazırlayanlar
+
+## 🎯 Neden Veri Güvenliği?
+
+Klinik veri **iki gerilim** arasında durur:
+
+1. **Bilim** veriyi paylaşmayı, çoğaltmayı, analiz etmeyi gerektirir
+2. **Etik ve yasa** mahremiyet korumasını şart koşar
+
+Bu rehber bu iki gerekliliği aynı anda karşılayan **akademik standart yöntemleri** anlatır:
+
+- ❌ "T.C. kimliği sildim, artık anonim" yanılgısının neden tehlikeli olduğunu
+- ✅ HIPAA / GDPR / KVKK uyumlu kimliksizleştirme yöntemlerini
+- ✅ Anahtar dosya / anonim dosya mimarisini
+- ✅ SHA-256 + salt ile geri-eşleştirilebilir hashleme
+- ✅ BitLocker, 7-Zip, VeraCrypt ile dosya şifreleme
+- ✅ Klinik veri paylaşımı için pratik kontrol listesi
+
+## 📚 İçerik
+
+::: {.kart-grid}
+
+::: {.kart}
+### 1. Kimliksizleştirme
+Klinik veride hasta kimliği nasıl korunur, anahtar dosya ve hashleme ile geri-eşleştirilebilir akış. Excel ve R uygulamaları, akademik kaynakça.
+
+[**Başla →**](rehber/01-kimliksizlestirme.qmd)
+:::
+
+:::
+
+> 🚧 Yeni bölümler eklenmeye devam edecek: şifreleme stratejileri, erişim kontrolü, KVKK uyum süreci, çok merkezli çalışmalarda veri paylaşımı.
+
+## 🌐 İlgili Kaynaklar
+
+- 🧹 **[Veri Temizliği Rehberi](https://drmuammer.github.io/veri-temizligi/)** — Kimliksizleştirme öncesi yapılması gereken veri temizliği
+- 📖 **[Zotero Rehberi](https://drmuammer.github.io/zotero-rehberi/)** — Akademik referans yönetimi
+
+## 📜 Lisans ve Atıf
+
+Bu rehber [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) altında paylaşılmaktadır. Kaynağı belirterek özgürce kullanabilir, dağıtabilir ve uyarlayabilirsiniz.
+
+**Önerilen atıf:**
+
+> Beslen, M. (2026). *Veri Güvenliği: Klinik araştırma verisinde kimliksizleştirme ve güvenlik rehberi*. https://drmuammer.github.io/veri-seti-guvenligi/
+
+Hata ya da öneri için [GitHub Issues](https://github.com/drmuammer/veri-seti-guvenligi/issues) üzerinden ulaşabilirsiniz.
+
+---
+
+::: {.text-center}
+*"Veri olmadan sen sadece görüşünü olan başka bir insansın — ama veri başkalarının emanetiyse, onu korumak da senin görevindir."*
+:::

@@ -1,0 +1,21 @@
+﻿hasta_id,ad,soyad,sahte_kimlik_no,dogum_tarihi,telefon,adres,posta_kodu,sehir,cinsiyet,tani,yatis_tarihi,fev1,fvc,smoking_pack_year
+1,Marcus,Aurelius,PT-0001-AB,1958-03-15,+99-555-0001,12 Sample Street,X1-001,Demoville,Erkek,KOAH,2024-01-15,1.8,2.6,30
+2,Lucia,Ventura,PT-0002-CD,1962-04-23,+99-555-0002,45 Example Road,X1-002,Anytown,Kadın,KOAH-Astım,2024-01-18,1.6,2.2,0
+3,Quintus,Fabius,PT-0003-EF,1955-12-01,+99-555-0003,8 Test Avenue,X1-003,Mockville,Erkek,KOAH,2024-02-02,1.5,2.0,45
+4,Aurelia,Maximus,PT-0004-GH,1968-05-12,+99-555-0004,1 Demo Boulevard,X1-004,Demoville,Kadın,Astım,2024-02-09,2.0,2.8,25
+5,Tiberius,Claudius,PT-0005-IJ,1960-07-20,+99-555-0005,23 Fictional Lane,X1-005,Fakeburg,Erkek,KOAH,2024-02-15,1.4,2.1,50
+6,Octavia,Sabina,PT-0006-KL,1965-03-05,+99-555-0006,7 Placeholder St,X1-006,Anytown,Kadın,Astım,2024-03-01,2.2,3.0,0
+7,Decimus,Iunius,PT-0007-MN,1957-09-08,+99-555-0007,99 Hypothetical Way,X1-007,Mockville,Erkek,KOAH,2024-03-10,1.3,1.9,60
+8,Cornelia,Drusilla,PT-0008-OP,1963-11-22,+99-555-0008,14 Pretend Place,X1-008,Demoville,Kadın,KOAH-Astım,2024-03-15,1.7,2.4,20
+9,Gaius,Maximus,PT-0009-QR,1959-02-14,+99-555-0009,33 Imaginary Road,X1-009,Fakeburg,Erkek,KOAH,2024-03-22,1.5,2.1,40
+10,Livia,Procula,PT-0010-ST,1966-08-12,+99-555-0010,5 Made-Up Court,X1-010,Anytown,Kadın,Astım,2024-04-01,2.1,2.9,10
+11,Publius,Cassius,PT-0011-UV,1961-06-30,+99-555-0011,62 Sample Street,X1-001,Demoville,Erkek,KOAH,2024-04-08,1.6,2.3,35
+12,Antonia,Caelia,PT-0012-WX,1969-11-11,+99-555-0012,11 Synthetic Avenue,X1-011,Mockville,Kadın,Astım,2024-04-15,2.3,3.1,5
+13,Valerius,Otho,PT-0013-YZ,1956-08-04,+99-555-0013,77 Fictional Lane,X1-005,Fakeburg,Erkek,KOAH,2024-04-22,1.2,1.8,55
+14,Iulia,Marcellina,PT-0014-AC,1968-12-03,+99-555-0014,29 Placeholder St,X1-006,Anytown,Kadın,KOAH-Astım,2024-05-02,1.9,2.6,15
+15,Marcus,Antonius,PT-0015-BD,1954-10-25,+99-555-0015,108 Hypothetical Way,X1-007,Mockville,Erkek,KOAH,2024-05-10,1.3,1.9,60
+16,Marcus,Aurelius,PT-0001-AB,1958-03-15,+99-555-0001,12 Sample Street,X1-001,Demoville,Erkek,KOAH,2024-05-15,1.7,2.5,30
+17,Calpurnia,Pisonis,PT-0017-EF,1971-07-19,+99-555-0017,44 Pretend Place,X1-008,Demoville,Kadın,Astım,2024-05-22,2.4,3.2,0
+18,Servius,Tullius,PT-0018-GH,1953-04-01,+99-555-0018,16 Imaginary Road,X1-009,Fakeburg,Erkek,KOAH,2024-05-30,1.1,1.7,65
+19,Drusilla,Vipsania,PT-0019-IJ,1972-09-14,+99-555-0019,82 Made-Up Court,X1-010,Anytown,Kadın,Astım,2024-06-05,2.5,3.3,0
+20,Caius,Marius,PT-0020-KL,1959-01-28,+99-555-0020,37 Synthetic Avenue,X1-011,Mockville,Erkek,KOAH,2024-06-12,1.4,2.0,50

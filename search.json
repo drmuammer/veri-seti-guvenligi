@@ -1,0 +1,237 @@
+[
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html",
+    "href": "rehber/01-kimliksizlestirme.html",
+    "title": "1. Kimliksizleştirme",
+    "section": "",
+    "text": "NotBu bölümde ne öğreneceksin?\n\n\n\n\nDoğrudan ve dolaylı tanımlayıcılar nedir, ne zaman risklidir\nHIPAA, GDPR, KVKK çerçevesinde kabul gören kimliksizleştirme nedir\nAnahtar dosya / çalışma dosyası mimarisi\nExcel ve R ile uygulamalı kimliksizleştirme\nSHA-256 hash ile geri-eşleştirilebilir psödonimleştirme\nBitLocker, 7-Zip, VeraCrypt ile şifreleme\nYeniden tanımlama saldırılarına karşı önlemler (\\(k\\)-anonimlik, \\(\\ell\\)-çeşitlilik)\n\nEşlik eden örnek veri: ornek-tanimlayici-veri.csv",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#neden-önemli",
+    "href": "rehber/01-kimliksizlestirme.html#neden-önemli",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.1 Neden Önemli?",
+    "text": "1.1 Neden Önemli?\nKlinik araştırmada hasta verisi üç farklı amaçla kullanılır: temizlik, analiz, paylaşım. Bu üç amaç için aynı düzeyde tanımlayıcı bilgiye ihtiyaç yoktur. Veri minimizasyonu — yani her aşamada gereken en az kimlik bilgisini bulundurma — modern veri etiğinin temel ilkesidir (1).\nVeri ihlalleri çoğunlukla “anonim” sanılan veri kümelerinde ortaya çıkar. En çarpıcı örneklerden biri Sweeney’in 1997 tarihli çalışmasıdır: Massachusetts eyaletinin “anonimleştirilmiş” hastane taburcu verilerinden, posta kodu + cinsiyet + doğum tarihi üçlüsünü kullanarak eyalet valisi William Weld’in tıbbi kayıtlarını tespit etmiştir (2). Bu çalışma sonradan HIPAA Safe Harbor kuralının doğmasına yol açtı.\n\n\n\n\n\n\nUyarıAnonim ≠ Tanımlanamaz\n\n\n\n“İsim ve T.C. kimlik numarasını sildim, artık anonim” düşüncesi en yaygın ve en tehlikeli yanılgıdır. Yaş, cinsiyet, posta kodu gibi sıradan değişkenlerin kombinasyonu kişiyi yeniden tanımlamaya yetebilir.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#kavramsal-çerçeve",
+    "href": "rehber/01-kimliksizlestirme.html#kavramsal-çerçeve",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.2 Kavramsal Çerçeve",
+    "text": "1.2 Kavramsal Çerçeve\n\n1.2.1 Tanımlayıcı Türleri\nISO/IEC 20889 (3) ve NIST SP 800-188 (4) şu üç sınıfı kullanır:\n\n\n\n\n\n\n\n\nSınıf\nTanım\nÖrnek\n\n\n\n\nDoğrudan tanımlayıcı\nTek başına kişiyi tanımlar\nAd-soyad, T.C. kimlik no, telefon, e-posta, hasta numarası, MRN\n\n\nDolaylı tanımlayıcı (quasi-identifier)\nTek başına yetersiz, kombinasyonla tanımlayabilir\nDoğum tarihi, cinsiyet, posta kodu, ırk, meslek, tanı tarihi\n\n\nHassas değişken\nAçıklanması zarar verebilir\nTanı, genetik veri, sosyoekonomik bilgi\n\n\n\n\n\n1.2.2 Anonimleştirme — Üç Farklı Düzey\nBu üç terim akademik literatürde farklı şeyler ifade eder; yasal sonuçları da farklıdır (5).\n(1) Pseudonymization (Sahte adlandırma):\nKimliği bir kod ile değiştirme. Anahtar tablo bilinirse geri dönülebilir. GDPR’a göre hâlâ kişisel veridir (1).\nMarcus Aurelius → PT-0001-AB\n(2) Anonymization (Anonimleştirme):\nKimliği geri dönülemez şekilde kaldırma. Anahtar tablo yok, ya da yok edilmiştir. GDPR/KVKK kapsamı dışındadır (1, Resital 26).\nMarcus Aurelius → (kayıt silinmiş, anahtar yok)\n(3) De-identification (Kimliksizleştirme):\nABD HIPAA çerçevesinde tanımlanmış, daha geniş bir terim. İki yöntemi vardır (6):\n\nSafe Harbor: 18 belirli tanımlayıcının kaldırılması (aşağıda liste)\nExpert Determination: Bir uzmanın yeniden tanımlama riskinin “çok küçük” olduğunu istatistiksel olarak göstermesi\n\n\n\n1.2.3 HIPAA Safe Harbor — 18 Tanımlayıcı\nABD’de altın standart kabul edilen liste (6 CFR §164.514(b)(2)):\n\nİsimler\nCoğrafi alt birimler (sokak, ilçe, posta kodu — il düzeyinden küçük)\nTarihsel ögelerdeki gün/ay (yıl &gt; 89 olanlar hariç tüm tarihler)\nTelefon\nFaks\nE-posta\nSosyal güvenlik numarası\nTıbbi kayıt numarası (MRN)\nSağlık planı üye numarası\nHesap numaraları\nSertifika/lisans numaraları\nAraç tanımlayıcıları (plaka)\nCihaz tanımlayıcıları\nURL’ler\nIP adresleri\nBiyometrik tanımlayıcılar (parmak izi, ses)\nTam yüz fotoğrafları\nDiğer tüm benzersiz tanımlayıcılar\n\nBu 18 öğenin hepsi kaldırıldığında veri HIPAA-uyumlu kimliksizleştirilmiş sayılır.\n\n\n1.2.4 Türkiye KVKK Açısından\nKVKK 6698 sayılı Kanun, anonimleştirmeyi şöyle tanımlar:\n\n“Anonim hâle getirme, kişisel verilerin, başka verilerle eşleştirilerek dahi hiçbir surette kimliği belirli veya belirlenebilir bir gerçek kişiyle ilişkilendirilemeyecek hâle getirilmesidir.” (7)\n\nPratikte KVKK, GDPR ile uyumlu uygulamayı kabul eder. Kişisel Verileri Koruma Kurumu’nun yayınladığı “Kişisel Verilerin Anonim Hale Getirilmesi Rehberi” (8) HIPAA Safe Harbor’a benzer bir yaklaşım benimser.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#yeniden-tanımlama-saldırıları",
+    "href": "rehber/01-kimliksizlestirme.html#yeniden-tanımlama-saldırıları",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.3 Yeniden Tanımlama Saldırıları",
+    "text": "1.3 Yeniden Tanımlama Saldırıları\nAnonim sanılan veri kümelerinden kişi tespit edilmiş gerçek vakalar:\n\nVaka 1: Massachusetts Sağlık Verisi (1997)\nSweeney, eyalet çalışanlarına ait “anonimleştirilmiş” hastane taburcu verisini, halka açık seçmen kayıtlarıyla 5 dakikada birleştirerek vali Weld’in tüm sağlık geçmişini ortaya çıkardı (2). Üç değişken yetti: 5 haneli posta kodu, doğum tarihi, cinsiyet. ABD nüfusunun %87’si bu üçlü ile benzersizdir.\n\n\nVaka 2: AOL Arama Verisi (2006)\nAOL “anonim” 20 milyon arama sorgusu yayınladı. New York Times gazetecileri, sorguların içeriğinden bir kullanıcının kimliğini birkaç saatte ortaya çıkardı (9).\n\n\nVaka 3: Netflix Prize (2008)\nNetflix anonim 100 milyon film değerlendirmesini araştırma için yayınladı. Narayanan ve Shmatikov, bu veriyi halka açık IMDb yorumlarıyla birleştirerek kullanıcıları %99 doğrulukla tespit ettiler (10).\n\n\nÇıkarım\n\nBir veri kümesinin “anonim” olup olmadığı, veri kümesinin kendisi tek başına belirleyemez. Dış veri kaynaklarıyla birleştirilebilirliği de düşünülmelidir (11).",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#k-anonimlik-ve-ell-çeşitlilik",
+    "href": "rehber/01-kimliksizlestirme.html#k-anonimlik-ve-ell-çeşitlilik",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.4 \\(k\\)-Anonimlik ve \\(\\ell\\)-Çeşitlilik",
+    "text": "1.4 \\(k\\)-Anonimlik ve \\(\\ell\\)-Çeşitlilik\nYeniden tanımlama riskini ölçmek için iki temel kavram:\n\n\\(k\\)-Anonimlik (12)\nBir veri kümesi \\(k\\)-anonim ise, her kayıt dolaylı tanımlayıcılarla en az \\(k-1\\) başka kayıttan ayırt edilemez.\nÖrneğin \\(k=5\\) ise, her benzersiz (yaş, cinsiyet, posta kodu) kombinasyonu en az 5 kişide olmalıdır. Sweeney çalışması \\(k=1\\) olduğunda risk maksimumdur.\nPratikte \\(k=5\\) minimum, \\(k=10-15\\) tercih edilir (13).\n\n\n\\(\\ell\\)-Çeşitlilik (14)\n\\(k\\)-anonim ama hassas değişkende çeşitlilik yoksa risk hâlâ vardır. Örneğin: 5 kişilik bir grupta hepsi aynı tanıyı taşıyorsa, “bu kişi de o tanıyı taşıyor” çıkarımı yapılabilir.\n\\(\\ell\\)-çeşitlilik, her grupta hassas değişken için en az \\(\\ell\\) farklı değer olmasını şart koşar.\n\n\n\n\n\n\nİpucuPratikte ne yapayım?\n\n\n\nKlinisyen olarak elinizde 50-200 hastalık örneklem var. Tam \\(k\\)-anonimlik için R’da sdcMicro paketini kullanabilirsiniz. Ancak çoğu durumda doğrudan tanımlayıcıları kaldırmak + tarih/posta kodunu kaba grupları çevirmek + dosyayı şifrelemek yeterli koruma sağlar.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#pratik-mimari-anahtar-dosya-çalışma-dosyası",
+    "href": "rehber/01-kimliksizlestirme.html#pratik-mimari-anahtar-dosya-çalışma-dosyası",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.5 Pratik Mimari — Anahtar Dosya / Çalışma Dosyası",
+    "text": "1.5 Pratik Mimari — Anahtar Dosya / Çalışma Dosyası\nAkademik standart yaklaşım (13):\n┌─────────────────────────────────────┐\n│  ORİJİNAL VERİ                      │\n│  (ad, tc, telefon, klinik veri)     │\n│  🔐 BitLocker'lı klasör             │\n└──────────────┬──────────────────────┘\n               │  ikiye böl\n               ▼\n   ┌───────────┴───────────┐\n   │                       │\n┌──▼──────────┐    ┌───────▼──────────┐\n│ KEY FILE    │    │ ANONİM DOSYA     │\n│ anon_id +   │    │ anon_id +        │\n│ ad + tc +   │    │ klinik veri      │\n│ telefon ... │    │ (kimlik yok)     │\n│ 🔐🔐 KASA   │    │ 🔓 çalışma alanı │\n└─────────────┘    └──────────────────┘\n   sadece sen          biyoistatistikçi,\n                       OpenRefine, R analizi\nİki dosya ayrı yerlerde durur:\n\nKey file: şifreli klasörde, paylaşılmaz, yedeklenir\nAnonim dosya: çalışma alanında, paylaşılabilir\n\nİhtiyaç halinde anon_id üzerinden eşleştirme (join) yapılır.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#excel-ile-uygulama",
+    "href": "rehber/01-kimliksizlestirme.html#excel-ile-uygulama",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.6 Excel ile Uygulama",
+    "text": "1.6 Excel ile Uygulama\nBasit bir senaryo: 20 hastalık dosyamız var, kimliksizleştirelim.\n\nAdım 1 — Yeni ID Sütunu\nOrijinal dosyayı açın, en sola yeni bir sütun ekleyin: anon_id.\nA2 hücresine:\n=\"PID-\" & TEXT(ROW()-1, \"0000\")\nAşağı sürükleyin: PID-0001, PID-0002, …\n\n\n\n\n\n\nNotDaha güvenli ID üretmek\n\n\n\nSıralı sayı tahmin edilebilir. Daha güvenli bir yöntem rastgele 8 haneli ID:\n=\"PID-\" & TEXT(RANDBETWEEN(10000000, 99999999), \"00000000\")\nSonra Özel Yapıştır → Yalnızca Değer ile sabitleyin (yoksa her açışta değişir).\n\n\n\n\nAdım 2 — İkiye Böl\nDosyayı iki farklı dosyaya kopyalayın:\nkey-file.xlsx — sadece kimlik sütunları:\nanon_id   ad        soyad      sahte_kimlik_no    telefon          adres\nPID-0001  Marcus    Aurelius   PT-0001-AB         +99-555-0001    12 Sample Street\nPID-0002  Lucia     Ventura    PT-0002-CD         +99-555-0002    45 Example Road\n...\nveri-anonim.xlsx — sadece klinik bilgi:\nanon_id   dogum_yili  cinsiyet  tani         fev1   fvc   smoking_pack_year\nPID-0001  1958        Erkek     KOAH         1.8    2.6   30\nPID-0002  1962        Kadın     KOAH-Astım   1.6    2.2    0\n...\n\n\n\n\n\n\nUyarıTarihler\n\n\n\nDoğum tarihinden sadece yıl tutuldu (HIPAA Safe Harbor 3. madde). Yatış tarihi de aynı şekilde işlenmeli ya da silinmeli.\n\n\n\n\nAdım 3 — Eşleştirme\nSonradan “PID-0001 kim?” diye baktığınızda VLOOKUP:\n=VLOOKUP(\"PID-0001\", key-file.xlsx!A:F, 2, FALSE)\n→ “Marcus” döner.\nExcel ile yöntem basit ama hatalara açıktır: sütun unutmak, yedeklemeyi karıştırmak. R ile yapmak daha güvenlidir.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#r-ile-otomatik-kimliksizleştirme",
+    "href": "rehber/01-kimliksizlestirme.html#r-ile-otomatik-kimliksizleştirme",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.7 R ile Otomatik Kimliksizleştirme",
+    "text": "1.7 R ile Otomatik Kimliksizleştirme\nAşağıdaki şablon, bir Excel/CSV dosyasını alıp iki dosyaya bölen ve anon_id üreten tam bir akıştır.\n\n1.7.1 Paketler\ninstall.packages(c(\"readr\", \"writexl\", \"dplyr\", \"digest\", \"openssl\"))\n\nlibrary(readr)      # CSV okuma\nlibrary(writexl)    # Excel yazma\nlibrary(dplyr)      # Veri manipülasyonu\nlibrary(digest)     # Hash fonksiyonları\nlibrary(openssl)    # SHA-256\n\n\n1.7.2 Veriyi Yükle\nveri &lt;- read_csv(\"ornek-tanimlayici-veri.csv\", \n                 show_col_types = FALSE)\n\nnames(veri)\n# [1] \"hasta_id\"        \"ad\"              \"soyad\"          \n# [4] \"sahte_kimlik_no\" \"dogum_tarihi\"    \"telefon\"        \n# [7] \"adres\"           \"posta_kodu\"      \"sehir\"          \n# [10] \"cinsiyet\"       \"tani\"            \"yatis_tarihi\"   \n# [13] \"fev1\"           \"fvc\"             \"smoking_pack_year\"\n\n\n1.7.3 Tanımlayıcıları Belirle\n# Doğrudan tanımlayıcılar — anahtar dosyaya gidecek\ndogrudan_tanimlayicilar &lt;- c(\"ad\", \"soyad\", \"sahte_kimlik_no\", \n                              \"telefon\", \"adres\")\n\n# Dolaylı tanımlayıcılar — dönüştürülecek\ndolayli_tanimlayicilar &lt;- c(\"dogum_tarihi\", \"yatis_tarihi\", \n                             \"posta_kodu\", \"sehir\")\n\n# Klinik (analizde kalacak)\nklinik &lt;- c(\"cinsiyet\", \"tani\", \"fev1\", \"fvc\", \"smoking_pack_year\")\n\n\n1.7.4 Yeni Anon ID Üret\nset.seed(42)  # tekrarlanabilirlik için\n\n# Rastgele 8 haneli ID\nveri &lt;- veri %&gt;%\n  mutate(anon_id = sprintf(\"PID-%08d\", \n                           sample(10000000:99999999, n(), \n                                  replace = FALSE)))\n\n\n1.7.5 Tarihleri Yıla Çevir (HIPAA Safe Harbor)\nveri &lt;- veri %&gt;%\n  mutate(\n    dogum_yili  = as.numeric(format(as.Date(dogum_tarihi), \"%Y\")),\n    yatis_yili  = as.numeric(format(as.Date(yatis_tarihi), \"%Y\"))\n  )\n\n\n1.7.6 Posta Kodunu Kabalaştır\n# Tam posta kodu yerine sadece ilk 2 karakter\nveri &lt;- veri %&gt;%\n  mutate(posta_kodu_kaba = substr(posta_kodu, 1, 2))\n\n\n1.7.7 Anahtar ve Anonim Dosyaları Oluştur\n# Anahtar dosya — orijinal kimlik bilgileri + anon_id\nkey_file &lt;- veri %&gt;%\n  select(anon_id, all_of(dogrudan_tanimlayicilar),\n         dogum_tarihi, yatis_tarihi, posta_kodu, sehir)\n\n# Anonim dosya — sadece anon_id + güvenli değişkenler\nanonim_dosya &lt;- veri %&gt;%\n  select(anon_id, dogum_yili, cinsiyet, tani, \n         posta_kodu_kaba, fev1, fvc, smoking_pack_year)\n\n# Kaydet\nwrite_xlsx(key_file, \"key-file.xlsx\")\nwrite_csv(anonim_dosya, \"veri-anonim.csv\")\n\ncat(\"✅ İki dosya oluşturuldu.\\n\")\ncat(\"⚠ key-file.xlsx şifreli klasöre taşınmalı!\\n\")\n\n\n1.7.8 Eşleştirme (Match) — Sonradan Kullanım\nkey  &lt;- read_xlsx(\"key-file.xlsx\")\nanon &lt;- read_csv(\"veri-anonim.csv\")\n\n# anon_id üzerinden birleştir\nbirlesik &lt;- anon %&gt;%\n  left_join(key %&gt;% select(anon_id, ad, soyad), by = \"anon_id\")\n\n# Geçici kullanım sonrası SİL\nrm(birlesik)\n\n\n\n\n\n\nÖnemliBirleştirilmiş veriyi kalıcı tutmayın\n\n\n\nAd ile klinik veriyi birleştirdiğinizde elinizde yeniden tanımlanabilir veri vardır. Kullandıktan sonra sıfırdan üretilebileceği için saklamayın.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#hashleme-geri-dönülemez-eşleştirme",
+    "href": "rehber/01-kimliksizlestirme.html#hashleme-geri-dönülemez-eşleştirme",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.8 Hashleme — Geri Dönülemez Eşleştirme",
+    "text": "1.8 Hashleme — Geri Dönülemez Eşleştirme\nBazen kurumlar arası çalışmada şu sorun çıkar: “Aynı hasta hem hastane A hem de hastane B’de mi?” — ama T.C. kimlik paylaşılamaz.\nÇözüm: Salted Hash (Tuzlu Özet).\n\n1.8.1 Mantık\nTC: 12345678901\n+ Salt (gizli ortak tuz): \"AKDENIZ-2024-PROJESI\"\n↓ SHA-256\nHash: 7f3a2b...e9d1 (64 karakter)\nİki kurum aynı tuz ile hash üretirse:\n\nAynı TC → aynı hash → eşleşme bulunur\nHash’ten TC geri çıkarılamaz (15)\n\n\n\n1.8.2 R’da Uygulama\nlibrary(openssl)\n\n# Salt'i paylaş ama dışarı sızdırma\nSALT &lt;- \"ProjeKodu-2024-GizliTuz-v1\"\n\n# TC'yi hashle\nveri &lt;- veri %&gt;%\n  mutate(\n    tc_hash = sha256(paste0(sahte_kimlik_no, SALT))\n  )\n\n# Sadece hash'i tut, orijinali sil\nveri$sahte_kimlik_no &lt;- NULL\n\n\n1.8.3 Salt’in Kritik Önemi\nTuzsuz hash kırılabilir. Saldırgan tüm olası TC’leri (10^11 olasılık) hash’leyip rainbow table yapabilir (16).\nTuzlu hash bu saldırıyı önler:\n\n\n\n\n\n\nİpucuİyi tuz nasıl olur?\n\n\n\n\nEn az 16 karakter, rastgele\nSadece proje sorumlusunda\nVeri ile birlikte saklanmaz\nProje bittiğinde silinir\n\n\n\n# Güvenli rastgele tuz üret\nSALT &lt;- paste0(sample(c(letters, LETTERS, 0:9), 32, replace = TRUE), \n               collapse = \"\")\n# Bunu güvenli not defterine kaydet\n\n\n1.8.4 HMAC — Daha Sağlam Yöntem\nKriptografik olarak daha sağlam yöntem HMAC-SHA256:\nlibrary(openssl)\n\nveri &lt;- veri %&gt;%\n  mutate(\n    tc_hmac = sha256(sahte_kimlik_no, key = SALT)\n  )\nHMAC, salt’in hash içine güvenli şekilde dahil edilmesini sağlar.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#dosya-şifreleme-üç-pratik-yöntem",
+    "href": "rehber/01-kimliksizlestirme.html#dosya-şifreleme-üç-pratik-yöntem",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.9 Dosya Şifreleme — Üç Pratik Yöntem",
+    "text": "1.9 Dosya Şifreleme — Üç Pratik Yöntem\nAnahtar dosya mutlaka şifrelenmelidir. Üç ana seçenek:\n\n1.9.1 BitLocker (Windows)\nTüm sürücü/klasör şifreleme:\n\nBu PC → şifrelemek istediğiniz sürücüye sağ tık → “BitLocker’ı aç”\nBir şifre belirleyin (en az 12 karakter, mix)\nKurtarma anahtarını yazıcı çıktısı olarak güvenli bir yerde saklayın\n“Yeni şifreleme modu” seçin\n\n\n\n\n\n\n\nUyarıKurtarma anahtarı önemli!\n\n\n\nBitLocker şifresini unutursanız, kurtarma anahtarı olmadan veri kaybolur. Yazılı çıktı + şifreli bulut yedek (örn. password manager) önerilir.\n\n\nAvantaj: Tüm klasördeki her dosya otomatik şifreli\nDezavantaj: Sadece Windows Pro/Enterprise’da\n\n\n1.9.2 7-Zip Şifreli Arşiv (en taşınabilir)\nTek dosyayı şifreli ZIP yapma:\n\n7-Zip indir: https://www.7-zip.org/\nDosyaya sağ tık → 7-Zip → Add to archive\nAyarlar:\n\nArchive format: 7z\nEncryption method: AES-256\nEncrypt file names: ✅ (dosya isimlerini de şifreler)\nPassword: güçlü şifre\n\n\nkey-file.xlsx → key-file.7z (şifreli)\nAçmak için aynı şifre gerekir, başka kimse açamaz (17).\nAvantaj: Her platformda çalışır, taşınabilir\nDezavantaj: Her açış-kapanışta şifre girmek\n\n\n1.9.3 VeraCrypt (en sağlam)\n“Kasa” mantığı — sanal bir şifreli sürücü oluşturma:\n\nVeraCrypt indir: https://veracrypt.fr/\nCreate Volume → “Encrypted file container”\nBoyut belirle (örn. 100 MB), şifre belirle\nAçıldığında sanal disk gibi kullanılır (örn. Z:\\)\nDisk üzerinde her dosya otomatik şifreli\n\nAvantaj: En güçlü, full deniability özelliği var, açık kaynak\nDezavantaj: Öğrenme eğrisi var\n\n\n1.9.4 Pratik Karar Tablosu\n\n\n\nSenaryo\nÖnerilen\n\n\n\n\nTek bir anahtar dosya\n7-Zip AES-256\n\n\nTüm proje klasörü\nBitLocker\n\n\nÇoklu kullanıcı paylaşımı\nVeraCrypt container\n\n\nBulut yedek\n7-Zip + bulut",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#klinik-veri-paylaşım-kontrol-listesi",
+    "href": "rehber/01-kimliksizlestirme.html#klinik-veri-paylaşım-kontrol-listesi",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.10 Klinik Veri Paylaşım Kontrol Listesi",
+    "text": "1.10 Klinik Veri Paylaşım Kontrol Listesi\nVeriyi başka birine (biyoistatistikçi, ortak araştırmacı) göndermeden önce:\n\nA. Anonim Dosya İçeriği\n\nAd, soyad sütunları yok\nT.C. kimlik / MRN yok\nTelefon, e-posta, adres yok\nTam doğum tarihi yerine sadece yıl\nTam posta kodu yerine ilk 2 karakter (ya da il)\nTam yatış-çıkış tarihleri yerine yıl\nanon_id benzersiz, kimliği geri vermiyor\n\n\n\nB. Anahtar Dosya Güvenliği\n\nAnahtar dosya ayrı klasörde\nKlasör BitLocker / VeraCrypt ile şifreli\nAnahtar dosya paylaşılmadı\nYedek de şifreli\nHash kullanıldıysa salt güvenli yerde\n\n\n\nC. Etik ve Yasal\n\nEtik kurul onayı kapsamında\nHasta onamı kapsamında (gerekiyorsa)\nKVKK / GDPR uyumlu işleme\nVeri saklama süresi tanımlı\n\n\n\nD. Teknik\n\nExcel formülleri silindi (hassas hesaplama içerebilir)\nGizli sütun/satır yok (Excel’de “hidden”)\nTablonun altında yorum/not yok\nExcel metadata (yazar, son düzenleyen) temizlendi:\n\nFile → Info → Check for Issues → Inspect Document → Remove All",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#yaygın-hatalar",
+    "href": "rehber/01-kimliksizlestirme.html#yaygın-hatalar",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.11 Yaygın Hatalar",
+    "text": "1.11 Yaygın Hatalar\n\n\n\n\n\n\nUyarıBu hataları yapmayın\n\n\n\n1. Anahtar dosyayı bulutta tutmak (şifresiz)\nGoogle Drive/OneDrive otomatik yedekleme açıksa key file ister istemez bulutta. Klasörü senkronizasyondan çıkarın.\n2. Aynı bilgisayarda key + anonim\nMümkünse anahtar dosyayı ayrı bir şifrelenmiş USB’de tutun.\n3. E-posta ile gönderme\nE-posta uçtan uca şifresizdir. Akademik veri için SFTP veya kurumsal güvenli paylaşım sistemleri kullanın.\n4. “Anonim” sandığınız veriyi yayınlamak\nTarih + posta kodu + yaş yeterli olabilir. Yayınlamadan önce bağımsız bir uzmandan görüş alın.\n5. Hash’i tuzsuz yapmak\nTuzsuz SHA-256 birkaç saatte kırılabilir. Mutlaka salt ekleyin.\n6. Salt’i veriyle birlikte saklamak\n“tc | hash | salt” sütunlarını yan yana koyarsanız tuz hiçbir işe yaramaz.\n7. Eski yedekleri kontrol etmemek\nÖnceki sürümlerde silinmemiş kimlik olabilir. Tüm yedekleri gözden geçirin.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#uygulamalı-egzersiz",
+    "href": "rehber/01-kimliksizlestirme.html#uygulamalı-egzersiz",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.12 Uygulamalı Egzersiz",
+    "text": "1.12 Uygulamalı Egzersiz\nBu rehbere eşlik eden örnek dosya: ornek-tanimlayici-veri.csv\n20 satır, kasıtlı sahte verili (tarihi Roma isimleri, sahte ID’ler, “+99” telefon kodu, “Sample Street” adresleri).\n\nEgzersiz Görevleri\n\nCSV dosyasını R’da yükleyin\nYeni anon_id üretin (rastgele PID-XXXXXXXX)\nDoğum tarihinden yıl bilgisini çıkarın\nAd-soyad-telefon-adres sütunlarını kaldırın\nPosta kodunu ilk 2 karaktere kabalaştırın\nT.C. yerine geçen sahte_kimlik_no sütununu salted SHA-256 ile hashleyin\nİki dosya oluşturun: key-file.xlsx, veri-anonim.csv\nkey-file.xlsx’i 7-Zip ile şifreli .7z’ye çevirin\nBonus: anon_id üzerinden anonim veriyi key-file ile join edip Marcus Aurelius’un fev1 değerini bulun\nBonus: Duplikatı (Marcus Aurelius iki kez) tespit edin (janitor::get_dupes(ad, soyad, dogum_tarihi))\n\nBu egzersizi tamamladığınızda kimliksizleştirme sürecinin tüm ana adımlarını uygulamış olursunuz.",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#bu-bölümün-özeti",
+    "href": "rehber/01-kimliksizlestirme.html#bu-bölümün-özeti",
+    "title": "1. Kimliksizleştirme",
+    "section": "1.13 Bu Bölümün Özeti",
+    "text": "1.13 Bu Bölümün Özeti\n\nAnonim, kimliksiz, sahte adlandırılmış terimlerinin yasal sonuçları farklı\nHIPAA Safe Harbor 18 doğrudan tanımlayıcıyı tanımlar; KVKK ve GDPR benzer yaklaşım benimser\n\\(k\\)-anonimlik ve \\(\\ell\\)-çeşitlilik yeniden tanımlama riskini ölçer\nPratik mimari: Anahtar dosya (kasada) + anonim dosya (analiz)\nKurumlar arası eşleştirme için salted SHA-256 veya HMAC\nAnahtar dosya mutlaka BitLocker, 7-Zip AES-256 veya VeraCrypt ile şifrelenir\nVeriyi paylaşmadan önce 4 başlıklı kontrol listesi (içerik, güvenlik, etik, teknik)",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "rehber/01-kimliksizlestirme.html#kaynakça",
+    "href": "rehber/01-kimliksizlestirme.html#kaynakça",
+    "title": "1. Kimliksizleştirme",
+    "section": "Kaynakça",
+    "text": "Kaynakça\n\n\n1. European Parliament and Council of the European Union. Regulation (EU) 2016/679 (General Data Protection Regulation) [Internet]. 2016. Erişim adresi: https://eur-lex.europa.eu/eli/reg/2016/679/oj\n\n\n2. Sweeney L. Simple Demographics Often Identify People Uniquely. Pittsburgh: Carnegie Mellon University, Data Privacy Working Paper; 2000. Report no.: 3.\n\n\n3. International Organization for Standardization. ISO/IEC 20889:2018 Privacy Enhancing Data De-identification Terminology and Classification of Techniques. 2018.\n\n\n4. Garfinkel SL. De-Identifying Government Datasets: Techniques and Governance. National Institute of Standards; Technology; 2023. Report NIST SP 800-188. doi:10.6028/NIST.SP.800-188\n\n\n5. Article 29 Data Protection Working Party. Opinion 05/2014 on Anonymisation Techniques (WP216) [Internet]. 2014. Erişim adresi: https://ec.europa.eu/justice/article-29/documentation/\n\n\n6. U.S. Department of Health and Human Services. Guidance Regarding Methods for De-identification of Protected Health Information in Accordance with the Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule [Internet]. 2013. Erişim adresi: https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/\n\n\n7. Türkiye Büyük Millet Meclisi. Kişisel Verilerin Korunması Kanunu (Kanun No: 6698) [Internet]. 2016. Erişim adresi: https://www.mevzuat.gov.tr/MevzuatMetin/1.5.6698.pdf\n\n\n8. Kişisel Verileri Koruma Kurumu. Kişisel Verilerin Anonim Hale Getirilmesi Rehberi [Internet]. 2019. Erişim adresi: https://www.kvkk.gov.tr/yayinlar/\n\n\n9. Barbaro M, Zeller T. A Face is Exposed for AOL Searcher No. 4417749 [Internet]. The New York Times; 2006. Erişim adresi: https://www.nytimes.com/2006/08/09/technology/09aol.html\n\n\n10. Narayanan A, Shmatikov V. Robust De-anonymization of Large Sparse Datasets. Içinde: 2008 IEEE Symposium on Security and Privacy (SP 2008). 2008. s. 111-25. doi:10.1109/SP.2008.33\n\n\n11. El Emam K, Jonker E, Arbuckle L, Malin B. A Systematic Review of Re-Identification Attacks on Health Data. PLoS ONE. 2011;6(12):e28071. doi:10.1371/journal.pone.0028071\n\n\n12. Sweeney L. k-anonymity: A Model for Protecting Privacy. International Journal of Uncertainty, Fuzziness and Knowledge-Based Systems. 2002;10(5):557-70. doi:10.1142/S0218488502001648\n\n\n13. El Emam K, Arbuckle L. Anonymizing Health Data: Case Studies and Methods to Get You Started. Sebastopol, CA: O’Reilly Media; 2013.\n\n\n14. Machanavajjhala A, Kifer D, Gehrke J, Venkitasubramaniam M. l-Diversity: Privacy Beyond k-Anonymity. ACM Transactions on Knowledge Discovery from Data. 2007;1(1):3-es. doi:10.1145/1217299.1217302\n\n\n15. National Institute of Standards and Technology. Secure Hash Standard (SHS) — FIPS PUB 180-4. NIST; 2015. doi:10.6028/NIST.FIPS.180-4\n\n\n16. Hellman ME. A Cryptanalytic Time-Memory Trade-Off. IEEE Transactions on Information Theory. 1980;26(4):401-6. doi:10.1109/TIT.1980.1056220\n\n\n17. National Institute of Standards and Technology. Advanced Encryption Standard (AES) — FIPS PUB 197. NIST; 2001. doi:10.6028/NIST.FIPS.197",
+    "crumbs": [
+      "Ana Sayfa",
+      "📚 Rehber",
+      "1. Kimliksizleştirme"
+    ]
+  },
+  {
+    "objectID": "index.html#bu-rehber-kimin-için",
+    "href": "index.html#bu-rehber-kimin-için",
+    "title": "🔐 Veri Güvenliği",
+    "section": "👋 Bu Rehber Kimin İçin?",
+    "text": "👋 Bu Rehber Kimin İçin?\nBu rehber, gerçek hasta verisi ile çalışan araştırmacılar içindir. Hedefi: hassas veriyi etik, yasal ve teknik olarak doğru biçimde işlemek için pratik bilgi vermek.\nHedef kitle:\n\nSaha epidemiyolojisi ve klinik araştırmacıları\nTez aşamasındaki uzmanlık ve doktora öğrencileri\nÇok merkezli çalışmalarda veri yöneten ekipler\nEtik kurul başvurusu hazırlayanlar",
+    "crumbs": [
+      "Ana Sayfa",
+      "🏠 Ana Sayfa"
+    ]
+  },
+  {
+    "objectID": "index.html#neden-veri-güvenliği",
+    "href": "index.html#neden-veri-güvenliği",
+    "title": "🔐 Veri Güvenliği",
+    "section": "🎯 Neden Veri Güvenliği?",
+    "text": "🎯 Neden Veri Güvenliği?\nKlinik veri iki gerilim arasında durur:\n\nBilim veriyi paylaşmayı, çoğaltmayı, analiz etmeyi gerektirir\nEtik ve yasa mahremiyet korumasını şart koşar\n\nBu rehber bu iki gerekliliği aynı anda karşılayan akademik standart yöntemleri anlatır:\n\n❌ “T.C. kimliği sildim, artık anonim” yanılgısının neden tehlikeli olduğunu\n✅ HIPAA / GDPR / KVKK uyumlu kimliksizleştirme yöntemlerini\n✅ Anahtar dosya / anonim dosya mimarisini\n✅ SHA-256 + salt ile geri-eşleştirilebilir hashleme\n✅ BitLocker, 7-Zip, VeraCrypt ile dosya şifreleme\n✅ Klinik veri paylaşımı için pratik kontrol listesi",
+    "crumbs": [
+      "Ana Sayfa",
+      "🏠 Ana Sayfa"
+    ]
+  },
+  {
+    "objectID": "index.html#içerik",
+    "href": "index.html#içerik",
+    "title": "🔐 Veri Güvenliği",
+    "section": "📚 İçerik",
+    "text": "📚 İçerik\n\n\n1. Kimliksizleştirme\nKlinik veride hasta kimliği nasıl korunur, anahtar dosya ve hashleme ile geri-eşleştirilebilir akış. Excel ve R uygulamaları, akademik kaynakça.\nBaşla →\n\n\n\n🚧 Yeni bölümler eklenmeye devam edecek: şifreleme stratejileri, erişim kontrolü, KVKK uyum süreci, çok merkezli çalışmalarda veri paylaşımı.",
+    "crumbs": [
+      "Ana Sayfa",
+      "🏠 Ana Sayfa"
+    ]
+  },
+  {
+    "objectID": "index.html#ilgili-kaynaklar",
+    "href": "index.html#ilgili-kaynaklar",
+    "title": "🔐 Veri Güvenliği",
+    "section": "🌐 İlgili Kaynaklar",
+    "text": "🌐 İlgili Kaynaklar\n\n🧹 Veri Temizliği Rehberi — Kimliksizleştirme öncesi yapılması gereken veri temizliği\n📖 Zotero Rehberi — Akademik referans yönetimi",
+    "crumbs": [
+      "Ana Sayfa",
+      "🏠 Ana Sayfa"
+    ]
+  },
+  {
+    "objectID": "index.html#lisans-ve-atıf",
+    "href": "index.html#lisans-ve-atıf",
+    "title": "🔐 Veri Güvenliği",
+    "section": "📜 Lisans ve Atıf",
+    "text": "📜 Lisans ve Atıf\nBu rehber CC BY 4.0 altında paylaşılmaktadır. Kaynağı belirterek özgürce kullanabilir, dağıtabilir ve uyarlayabilirsiniz.\nÖnerilen atıf:\n\nBeslen, M. (2026). Veri Güvenliği: Klinik araştırma verisinde kimliksizleştirme ve güvenlik rehberi. https://drmuammer.github.io/veri-seti-guvenligi/\n\nHata ya da öneri için GitHub Issues üzerinden ulaşabilirsiniz.\n\n\n“Veri olmadan sen sadece görüşünü olan başka bir insansın — ama veri başkalarının emanetiyse, onu korumak da senin görevindir.”",
+    "crumbs": [
+      "Ana Sayfa",
+      "🏠 Ana Sayfa"
+    ]
+  }
+]

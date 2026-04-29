@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1. Kimliksizleştirme – Veri Güvenliği</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-23bbe8b5e4efc1e257f6d59dce478b08.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5feaabed66f5ac1224eebc6339d715e7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e463fe4cac91f302a4b3b62c8a97ad20.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-5feaabed66f5ac1224eebc6339d715e7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sonuç yok",
+    "search-matching-documents-text": "eşleşen belgeler",
+    "search-copy-link-title": "Aramak için bağlantıyı kopyalayın",
+    "search-hide-matches-text": "Ek eşleşmeleri gizle",
+    "search-more-match-text": "bu belgede bir tane daha eşleşme",
+    "search-more-matches-text": "bu belgede daha fazla eşleşme",
+    "search-clear-button-title": "Temizle",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "İptal et",
+    "search-submit-button-title": "Gönder",
+    "search-label": "Ara"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">🔐 Veri Güvenliği</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Ara"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Gezinmeyi değiştir" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Ana Sayfa</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-rehber" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Rehber</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-rehber">    
+        <li>
+    <a class="dropdown-item" href="../rehber/01-kimliksizlestirme.html">
+ <span class="dropdown-text">1. Kimliksizleştirme</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/drmuammer/veri-seti-guvenligi"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://muammerbeslen.com"> <i class="bi bi-house" role="img" aria-label="Website">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Karanlık modu değiştir"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Kenar çubuğunu değiştir" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../rehber/01-kimliksizlestirme.html">📚 Rehber</a></li><li class="breadcrumb-item"><a href="../rehber/01-kimliksizlestirme.html">1. Kimliksizleştirme</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Kenar çubuğunu değiştir" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Ara" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Ara"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🏠 Ana Sayfa</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">📚 Rehber</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Bölümü değiştir">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../rehber/01-kimliksizlestirme.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">1. Kimliksizleştirme</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">İçindekiler</h2>
+   
+  <ul>
+  <li><a href="#neden-önemli" id="toc-neden-önemli" class="nav-link active" data-scroll-target="#neden-önemli">1.1 Neden Önemli?</a></li>
+  <li><a href="#kavramsal-çerçeve" id="toc-kavramsal-çerçeve" class="nav-link" data-scroll-target="#kavramsal-çerçeve">1.2 Kavramsal Çerçeve</a>
+  <ul class="collapse">
+  <li><a href="#tanımlayıcı-türleri" id="toc-tanımlayıcı-türleri" class="nav-link" data-scroll-target="#tanımlayıcı-türleri">1.2.1 Tanımlayıcı Türleri</a></li>
+  <li><a href="#anonimleştirme-üç-farklı-düzey" id="toc-anonimleştirme-üç-farklı-düzey" class="nav-link" data-scroll-target="#anonimleştirme-üç-farklı-düzey">1.2.2 Anonimleştirme — Üç Farklı Düzey</a></li>
+  <li><a href="#hipaa-safe-harbor-18-tanımlayıcı" id="toc-hipaa-safe-harbor-18-tanımlayıcı" class="nav-link" data-scroll-target="#hipaa-safe-harbor-18-tanımlayıcı">1.2.3 HIPAA Safe Harbor — 18 Tanımlayıcı</a></li>
+  <li><a href="#türkiye-kvkk-açısından" id="toc-türkiye-kvkk-açısından" class="nav-link" data-scroll-target="#türkiye-kvkk-açısından">1.2.4 Türkiye KVKK Açısından</a></li>
+  </ul></li>
+  <li><a href="#yeniden-tanımlama-saldırıları" id="toc-yeniden-tanımlama-saldırıları" class="nav-link" data-scroll-target="#yeniden-tanımlama-saldırıları">1.3 Yeniden Tanımlama Saldırıları</a>
+  <ul class="collapse">
+  <li><a href="#vaka-1-massachusetts-sağlık-verisi-1997" id="toc-vaka-1-massachusetts-sağlık-verisi-1997" class="nav-link" data-scroll-target="#vaka-1-massachusetts-sağlık-verisi-1997">Vaka 1: Massachusetts Sağlık Verisi (1997)</a></li>
+  <li><a href="#vaka-2-aol-arama-verisi-2006" id="toc-vaka-2-aol-arama-verisi-2006" class="nav-link" data-scroll-target="#vaka-2-aol-arama-verisi-2006">Vaka 2: AOL Arama Verisi (2006)</a></li>
+  <li><a href="#vaka-3-netflix-prize-2008" id="toc-vaka-3-netflix-prize-2008" class="nav-link" data-scroll-target="#vaka-3-netflix-prize-2008">Vaka 3: Netflix Prize (2008)</a></li>
+  <li><a href="#çıkarım" id="toc-çıkarım" class="nav-link" data-scroll-target="#çıkarım">Çıkarım</a></li>
+  </ul></li>
+  <li><a href="#k-anonimlik-ve-ell-çeşitlilik" id="toc-k-anonimlik-ve-ell-çeşitlilik" class="nav-link" data-scroll-target="#k-anonimlik-ve-ell-çeşitlilik">1.4 <span class="math inline">\(k\)</span>-Anonimlik ve <span class="math inline">\(\ell\)</span>-Çeşitlilik</a>
+  <ul class="collapse">
+  <li><a href="#k-anonimlik-sweeney2002k" id="toc-k-anonimlik-sweeney2002k" class="nav-link" data-scroll-target="#k-anonimlik-sweeney2002k"><span class="math inline">\(k\)</span>-Anonimlik <span class="citation" data-cites="sweeney2002k">(12)</span></a></li>
+  <li><a href="#ell-çeşitlilik-machanavajjhala2007ldiversity" id="toc-ell-çeşitlilik-machanavajjhala2007ldiversity" class="nav-link" data-scroll-target="#ell-çeşitlilik-machanavajjhala2007ldiversity"><span class="math inline">\(\ell\)</span>-Çeşitlilik <span class="citation" data-cites="machanavajjhala2007ldiversity">(14)</span></a></li>
+  </ul></li>
+  <li><a href="#pratik-mimari-anahtar-dosya-çalışma-dosyası" id="toc-pratik-mimari-anahtar-dosya-çalışma-dosyası" class="nav-link" data-scroll-target="#pratik-mimari-anahtar-dosya-çalışma-dosyası">1.5 Pratik Mimari — Anahtar Dosya / Çalışma Dosyası</a></li>
+  <li><a href="#excel-ile-uygulama" id="toc-excel-ile-uygulama" class="nav-link" data-scroll-target="#excel-ile-uygulama">1.6 Excel ile Uygulama</a>
+  <ul class="collapse">
+  <li><a href="#adım-1-yeni-id-sütunu" id="toc-adım-1-yeni-id-sütunu" class="nav-link" data-scroll-target="#adım-1-yeni-id-sütunu">Adım 1 — Yeni ID Sütunu</a></li>
+  <li><a href="#adım-2-ikiye-böl" id="toc-adım-2-ikiye-böl" class="nav-link" data-scroll-target="#adım-2-ikiye-böl">Adım 2 — İkiye Böl</a></li>
+  <li><a href="#adım-3-eşleştirme" id="toc-adım-3-eşleştirme" class="nav-link" data-scroll-target="#adım-3-eşleştirme">Adım 3 — Eşleştirme</a></li>
+  </ul></li>
+  <li><a href="#r-ile-otomatik-kimliksizleştirme" id="toc-r-ile-otomatik-kimliksizleştirme" class="nav-link" data-scroll-target="#r-ile-otomatik-kimliksizleştirme">1.7 R ile Otomatik Kimliksizleştirme</a>
+  <ul class="collapse">
+  <li><a href="#paketler" id="toc-paketler" class="nav-link" data-scroll-target="#paketler">1.7.1 Paketler</a></li>
+  <li><a href="#veriyi-yükle" id="toc-veriyi-yükle" class="nav-link" data-scroll-target="#veriyi-yükle">1.7.2 Veriyi Yükle</a></li>
+  <li><a href="#tanımlayıcıları-belirle" id="toc-tanımlayıcıları-belirle" class="nav-link" data-scroll-target="#tanımlayıcıları-belirle">1.7.3 Tanımlayıcıları Belirle</a></li>
+  <li><a href="#yeni-anon-id-üret" id="toc-yeni-anon-id-üret" class="nav-link" data-scroll-target="#yeni-anon-id-üret">1.7.4 Yeni Anon ID Üret</a></li>
+  <li><a href="#tarihleri-yıla-çevir-hipaa-safe-harbor" id="toc-tarihleri-yıla-çevir-hipaa-safe-harbor" class="nav-link" data-scroll-target="#tarihleri-yıla-çevir-hipaa-safe-harbor">1.7.5 Tarihleri Yıla Çevir (HIPAA Safe Harbor)</a></li>
+  <li><a href="#posta-kodunu-kabalaştır" id="toc-posta-kodunu-kabalaştır" class="nav-link" data-scroll-target="#posta-kodunu-kabalaştır">1.7.6 Posta Kodunu Kabalaştır</a></li>
+  <li><a href="#anahtar-ve-anonim-dosyaları-oluştur" id="toc-anahtar-ve-anonim-dosyaları-oluştur" class="nav-link" data-scroll-target="#anahtar-ve-anonim-dosyaları-oluştur">1.7.7 Anahtar ve Anonim Dosyaları Oluştur</a></li>
+  <li><a href="#eşleştirme-match-sonradan-kullanım" id="toc-eşleştirme-match-sonradan-kullanım" class="nav-link" data-scroll-target="#eşleştirme-match-sonradan-kullanım">1.7.8 Eşleştirme (Match) — Sonradan Kullanım</a></li>
+  </ul></li>
+  <li><a href="#hashleme-geri-dönülemez-eşleştirme" id="toc-hashleme-geri-dönülemez-eşleştirme" class="nav-link" data-scroll-target="#hashleme-geri-dönülemez-eşleştirme">1.8 Hashleme — Geri Dönülemez Eşleştirme</a>
+  <ul class="collapse">
+  <li><a href="#mantık" id="toc-mantık" class="nav-link" data-scroll-target="#mantık">1.8.1 Mantık</a></li>
+  <li><a href="#rda-uygulama" id="toc-rda-uygulama" class="nav-link" data-scroll-target="#rda-uygulama">1.8.2 R’da Uygulama</a></li>
+  <li><a href="#saltin-kritik-önemi" id="toc-saltin-kritik-önemi" class="nav-link" data-scroll-target="#saltin-kritik-önemi">1.8.3 Salt’in Kritik Önemi</a></li>
+  <li><a href="#hmac-daha-sağlam-yöntem" id="toc-hmac-daha-sağlam-yöntem" class="nav-link" data-scroll-target="#hmac-daha-sağlam-yöntem">1.8.4 HMAC — Daha Sağlam Yöntem</a></li>
+  </ul></li>
+  <li><a href="#dosya-şifreleme-üç-pratik-yöntem" id="toc-dosya-şifreleme-üç-pratik-yöntem" class="nav-link" data-scroll-target="#dosya-şifreleme-üç-pratik-yöntem">1.9 Dosya Şifreleme — Üç Pratik Yöntem</a>
+  <ul class="collapse">
+  <li><a href="#bitlocker-windows" id="toc-bitlocker-windows" class="nav-link" data-scroll-target="#bitlocker-windows">1.9.1 BitLocker (Windows)</a></li>
+  <li><a href="#zip-şifreli-arşiv-en-taşınabilir" id="toc-zip-şifreli-arşiv-en-taşınabilir" class="nav-link" data-scroll-target="#zip-şifreli-arşiv-en-taşınabilir">1.9.2 7-Zip Şifreli Arşiv (en taşınabilir)</a></li>
+  <li><a href="#veracrypt-en-sağlam" id="toc-veracrypt-en-sağlam" class="nav-link" data-scroll-target="#veracrypt-en-sağlam">1.9.3 VeraCrypt (en sağlam)</a></li>
+  <li><a href="#pratik-karar-tablosu" id="toc-pratik-karar-tablosu" class="nav-link" data-scroll-target="#pratik-karar-tablosu">1.9.4 Pratik Karar Tablosu</a></li>
+  </ul></li>
+  <li><a href="#klinik-veri-paylaşım-kontrol-listesi" id="toc-klinik-veri-paylaşım-kontrol-listesi" class="nav-link" data-scroll-target="#klinik-veri-paylaşım-kontrol-listesi">1.10 Klinik Veri Paylaşım Kontrol Listesi</a>
+  <ul class="collapse">
+  <li><a href="#a.-anonim-dosya-içeriği" id="toc-a.-anonim-dosya-içeriği" class="nav-link" data-scroll-target="#a.-anonim-dosya-içeriği">A. Anonim Dosya İçeriği</a></li>
+  <li><a href="#b.-anahtar-dosya-güvenliği" id="toc-b.-anahtar-dosya-güvenliği" class="nav-link" data-scroll-target="#b.-anahtar-dosya-güvenliği">B. Anahtar Dosya Güvenliği</a></li>
+  <li><a href="#c.-etik-ve-yasal" id="toc-c.-etik-ve-yasal" class="nav-link" data-scroll-target="#c.-etik-ve-yasal">C. Etik ve Yasal</a></li>
+  <li><a href="#d.-teknik" id="toc-d.-teknik" class="nav-link" data-scroll-target="#d.-teknik">D. Teknik</a></li>
+  </ul></li>
+  <li><a href="#yaygın-hatalar" id="toc-yaygın-hatalar" class="nav-link" data-scroll-target="#yaygın-hatalar">1.11 Yaygın Hatalar</a></li>
+  <li><a href="#uygulamalı-egzersiz" id="toc-uygulamalı-egzersiz" class="nav-link" data-scroll-target="#uygulamalı-egzersiz">1.12 Uygulamalı Egzersiz</a>
+  <ul class="collapse">
+  <li><a href="#egzersiz-görevleri" id="toc-egzersiz-görevleri" class="nav-link" data-scroll-target="#egzersiz-görevleri">Egzersiz Görevleri</a></li>
+  </ul></li>
+  <li><a href="#bu-bölümün-özeti" id="toc-bu-bölümün-özeti" class="nav-link" data-scroll-target="#bu-bölümün-özeti">1.13 Bu Bölümün Özeti</a></li>
+  <li><a href="#kaynakça" id="toc-kaynakça" class="nav-link" data-scroll-target="#kaynakça">Kaynakça</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/drmuammer/veri-seti-guvenligi/edit/main/rehber/01-kimliksizlestirme.qmd" class="toc-action"><i class="bi bi-github"></i>Bu sayfayı düzenle</a></li><li><a href="https://github.com/drmuammer/veri-seti-guvenligi/issues/new" class="toc-action"><i class="bi empty"></i>Sorun bildir</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../rehber/01-kimliksizlestirme.html">📚 Rehber</a></li><li class="breadcrumb-item"><a href="../rehber/01-kimliksizlestirme.html">1. Kimliksizleştirme</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">1. Kimliksizleştirme</h1>
+<p class="subtitle lead">Anonimleştirme, hashleme ve dosya güvenliği — akademik standartlarla</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Not</span>Bu bölümde ne öğreneceksin?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Doğrudan ve dolaylı tanımlayıcılar nedir, ne zaman risklidir</li>
+<li>HIPAA, GDPR, KVKK çerçevesinde kabul gören kimliksizleştirme nedir</li>
+<li>Anahtar dosya / çalışma dosyası mimarisi</li>
+<li>Excel ve R ile uygulamalı kimliksizleştirme</li>
+<li>SHA-256 hash ile geri-eşleştirilebilir psödonimleştirme</li>
+<li>BitLocker, 7-Zip, VeraCrypt ile şifreleme</li>
+<li>Yeniden tanımlama saldırılarına karşı önlemler (<span class="math inline">\(k\)</span>-anonimlik, <span class="math inline">\(\ell\)</span>-çeşitlilik)</li>
+</ul>
+<p><strong>Eşlik eden örnek veri:</strong> <a href="../ornek-veri/ornek-tanimlayici-veri.csv">ornek-tanimlayici-veri.csv</a></p>
+</div>
+</div>
+<section id="neden-önemli" class="level2">
+<h2 class="anchored" data-anchor-id="neden-önemli">1.1 Neden Önemli?</h2>
+<p>Klinik araştırmada hasta verisi üç farklı amaçla kullanılır: <strong>temizlik, analiz, paylaşım</strong>. Bu üç amaç için aynı düzeyde tanımlayıcı bilgiye ihtiyaç <strong>yoktur</strong>. Veri minimizasyonu — yani her aşamada gereken en az kimlik bilgisini bulundurma — modern veri etiğinin temel ilkesidir <span class="citation" data-cites="gdpr2016">(<a href="#ref-gdpr2016" role="doc-biblioref">1</a>)</span>.</p>
+<p>Veri ihlalleri çoğunlukla “anonim” sanılan veri kümelerinde ortaya çıkar. En çarpıcı örneklerden biri Sweeney’in 1997 tarihli çalışmasıdır: Massachusetts eyaletinin “anonimleştirilmiş” hastane taburcu verilerinden, posta kodu + cinsiyet + doğum tarihi üçlüsünü kullanarak eyalet valisi William Weld’in tıbbi kayıtlarını tespit etmiştir <span class="citation" data-cites="sweeney2000simple">(<a href="#ref-sweeney2000simple" role="doc-biblioref">2</a>)</span>. Bu çalışma sonradan <strong>HIPAA Safe Harbor kuralının</strong> doğmasına yol açtı.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Uyarı</span>Anonim ≠ Tanımlanamaz
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“İsim ve T.C. kimlik numarasını sildim, artık anonim” düşüncesi en yaygın ve <strong>en tehlikeli</strong> yanılgıdır. Yaş, cinsiyet, posta kodu gibi sıradan değişkenlerin kombinasyonu kişiyi yeniden tanımlamaya yetebilir.</p>
+</div>
+</div>
+</section>
+<section id="kavramsal-çerçeve" class="level2">
+<h2 class="anchored" data-anchor-id="kavramsal-çerçeve">1.2 Kavramsal Çerçeve</h2>
+<section id="tanımlayıcı-türleri" class="level3">
+<h3 class="anchored" data-anchor-id="tanımlayıcı-türleri">1.2.1 Tanımlayıcı Türleri</h3>
+<p>ISO/IEC 20889 <span class="citation" data-cites="iso20889">(<a href="#ref-iso20889" role="doc-biblioref">3</a>)</span> ve NIST SP 800-188 <span class="citation" data-cites="garfinkel2023nist">(<a href="#ref-garfinkel2023nist" role="doc-biblioref">4</a>)</span> şu üç sınıfı kullanır:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sınıf</th>
+<th>Tanım</th>
+<th>Örnek</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Doğrudan tanımlayıcı</strong></td>
+<td>Tek başına kişiyi tanımlar</td>
+<td>Ad-soyad, T.C. kimlik no, telefon, e-posta, hasta numarası, MRN</td>
+</tr>
+<tr class="even">
+<td><strong>Dolaylı tanımlayıcı (quasi-identifier)</strong></td>
+<td>Tek başına yetersiz, kombinasyonla tanımlayabilir</td>
+<td>Doğum tarihi, cinsiyet, posta kodu, ırk, meslek, tanı tarihi</td>
+</tr>
+<tr class="odd">
+<td><strong>Hassas değişken</strong></td>
+<td>Açıklanması zarar verebilir</td>
+<td>Tanı, genetik veri, sosyoekonomik bilgi</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="anonimleştirme-üç-farklı-düzey" class="level3">
+<h3 class="anchored" data-anchor-id="anonimleştirme-üç-farklı-düzey">1.2.2 Anonimleştirme — Üç Farklı Düzey</h3>
+<p>Bu üç terim <strong>akademik literatürde farklı şeyler</strong> ifade eder; yasal sonuçları da farklıdır <span class="citation" data-cites="article29wp216">(<a href="#ref-article29wp216" role="doc-biblioref">5</a>)</span>.</p>
+<p><strong>(1) Pseudonymization (Sahte adlandırma):</strong></p>
+<p>Kimliği bir kod ile değiştirme. Anahtar tablo bilinirse geri dönülebilir. GDPR’a göre <strong>hâlâ kişisel veridir</strong> <span class="citation" data-cites="gdpr2016">(<a href="#ref-gdpr2016" role="doc-biblioref">1</a>)</span>.</p>
+<pre><code>Marcus Aurelius → PT-0001-AB</code></pre>
+<p><strong>(2) Anonymization (Anonimleştirme):</strong></p>
+<p>Kimliği geri dönülemez şekilde kaldırma. Anahtar tablo yok, ya da yok edilmiştir. GDPR/KVKK kapsamı <strong>dışındadır</strong> <span class="citation" data-cites="gdpr2016">(<a href="#ref-gdpr2016" role="doc-biblioref">1</a>, Resital 26)</span>.</p>
+<pre><code>Marcus Aurelius → (kayıt silinmiş, anahtar yok)</code></pre>
+<p><strong>(3) De-identification (Kimliksizleştirme):</strong></p>
+<p>ABD HIPAA çerçevesinde tanımlanmış, daha geniş bir terim. İki yöntemi vardır <span class="citation" data-cites="hipaa2013">(<a href="#ref-hipaa2013" role="doc-biblioref">6</a>)</span>:</p>
+<ul>
+<li><strong>Safe Harbor:</strong> 18 belirli tanımlayıcının kaldırılması (aşağıda liste)</li>
+<li><strong>Expert Determination:</strong> Bir uzmanın yeniden tanımlama riskinin “çok küçük” olduğunu istatistiksel olarak göstermesi</li>
+</ul>
+</section>
+<section id="hipaa-safe-harbor-18-tanımlayıcı" class="level3">
+<h3 class="anchored" data-anchor-id="hipaa-safe-harbor-18-tanımlayıcı">1.2.3 HIPAA Safe Harbor — 18 Tanımlayıcı</h3>
+<p>ABD’de altın standart kabul edilen liste <span class="citation" data-cites="hipaa2013">(<a href="#ref-hipaa2013" role="doc-biblioref">6</a> CFR §164.514(b)(2))</span>:</p>
+<ol type="1">
+<li>İsimler</li>
+<li>Coğrafi alt birimler (sokak, ilçe, posta kodu — il düzeyinden küçük)</li>
+<li>Tarihsel ögelerdeki gün/ay (yıl &gt; 89 olanlar hariç tüm tarihler)</li>
+<li>Telefon</li>
+<li>Faks</li>
+<li>E-posta</li>
+<li>Sosyal güvenlik numarası</li>
+<li>Tıbbi kayıt numarası (MRN)</li>
+<li>Sağlık planı üye numarası</li>
+<li>Hesap numaraları</li>
+<li>Sertifika/lisans numaraları</li>
+<li>Araç tanımlayıcıları (plaka)</li>
+<li>Cihaz tanımlayıcıları</li>
+<li>URL’ler</li>
+<li>IP adresleri</li>
+<li>Biyometrik tanımlayıcılar (parmak izi, ses)</li>
+<li>Tam yüz fotoğrafları</li>
+<li>Diğer tüm benzersiz tanımlayıcılar</li>
+</ol>
+<p>Bu 18 öğenin hepsi kaldırıldığında veri <strong>HIPAA-uyumlu kimliksizleştirilmiş</strong> sayılır.</p>
+</section>
+<section id="türkiye-kvkk-açısından" class="level3">
+<h3 class="anchored" data-anchor-id="türkiye-kvkk-açısından">1.2.4 Türkiye KVKK Açısından</h3>
+<p>KVKK 6698 sayılı Kanun, anonimleştirmeyi şöyle tanımlar:</p>
+<blockquote class="blockquote">
+<p>“Anonim hâle getirme, kişisel verilerin, başka verilerle eşleştirilerek dahi hiçbir surette kimliği belirli veya belirlenebilir bir gerçek kişiyle ilişkilendirilemeyecek hâle getirilmesidir.” <span class="citation" data-cites="kvkk2016">(<a href="#ref-kvkk2016" role="doc-biblioref">7</a>)</span></p>
+</blockquote>
+<p>Pratikte KVKK, GDPR ile uyumlu uygulamayı kabul eder. Kişisel Verileri Koruma Kurumu’nun yayınladığı “Kişisel Verilerin Anonim Hale Getirilmesi Rehberi” <span class="citation" data-cites="kvkk_rehber2019">(<a href="#ref-kvkk_rehber2019" role="doc-biblioref">8</a>)</span> HIPAA Safe Harbor’a benzer bir yaklaşım benimser.</p>
+</section>
+</section>
+<section id="yeniden-tanımlama-saldırıları" class="level2">
+<h2 class="anchored" data-anchor-id="yeniden-tanımlama-saldırıları">1.3 Yeniden Tanımlama Saldırıları</h2>
+<p>Anonim sanılan veri kümelerinden kişi tespit edilmiş <strong>gerçek vakalar</strong>:</p>
+<section id="vaka-1-massachusetts-sağlık-verisi-1997" class="level3">
+<h3 class="anchored" data-anchor-id="vaka-1-massachusetts-sağlık-verisi-1997">Vaka 1: Massachusetts Sağlık Verisi (1997)</h3>
+<p>Sweeney, eyalet çalışanlarına ait “anonimleştirilmiş” hastane taburcu verisini, halka açık seçmen kayıtlarıyla <strong>5 dakikada</strong> birleştirerek vali Weld’in tüm sağlık geçmişini ortaya çıkardı <span class="citation" data-cites="sweeney2000simple">(<a href="#ref-sweeney2000simple" role="doc-biblioref">2</a>)</span>. Üç değişken yetti: <strong>5 haneli posta kodu, doğum tarihi, cinsiyet</strong>. ABD nüfusunun <strong>%87’si</strong> bu üçlü ile benzersizdir.</p>
+</section>
+<section id="vaka-2-aol-arama-verisi-2006" class="level3">
+<h3 class="anchored" data-anchor-id="vaka-2-aol-arama-verisi-2006">Vaka 2: AOL Arama Verisi (2006)</h3>
+<p>AOL “anonim” 20 milyon arama sorgusu yayınladı. New York Times gazetecileri, sorguların içeriğinden bir kullanıcının kimliğini birkaç saatte ortaya çıkardı <span class="citation" data-cites="barbaro2006face">(<a href="#ref-barbaro2006face" role="doc-biblioref">9</a>)</span>.</p>
+</section>
+<section id="vaka-3-netflix-prize-2008" class="level3">
+<h3 class="anchored" data-anchor-id="vaka-3-netflix-prize-2008">Vaka 3: Netflix Prize (2008)</h3>
+<p>Netflix anonim 100 milyon film değerlendirmesini araştırma için yayınladı. Narayanan ve Shmatikov, bu veriyi halka açık IMDb yorumlarıyla birleştirerek kullanıcıları <strong>%99 doğrulukla</strong> tespit ettiler <span class="citation" data-cites="narayanan2008robust">(<a href="#ref-narayanan2008robust" role="doc-biblioref">10</a>)</span>.</p>
+</section>
+<section id="çıkarım" class="level3">
+<h3 class="anchored" data-anchor-id="çıkarım">Çıkarım</h3>
+<blockquote class="blockquote">
+<p>Bir veri kümesinin “anonim” olup olmadığı, <strong>veri kümesinin kendisi tek başına</strong> belirleyemez. Dış veri kaynaklarıyla birleştirilebilirliği de düşünülmelidir <span class="citation" data-cites="elemam2011re">(<a href="#ref-elemam2011re" role="doc-biblioref">11</a>)</span>.</p>
+</blockquote>
+</section>
+</section>
+<section id="k-anonimlik-ve-ell-çeşitlilik" class="level2">
+<h2 class="anchored" data-anchor-id="k-anonimlik-ve-ell-çeşitlilik">1.4 <span class="math inline">\(k\)</span>-Anonimlik ve <span class="math inline">\(\ell\)</span>-Çeşitlilik</h2>
+<p>Yeniden tanımlama riskini ölçmek için iki temel kavram:</p>
+<section id="k-anonimlik-sweeney2002k" class="level3">
+<h3 class="anchored" data-anchor-id="k-anonimlik-sweeney2002k"><span class="math inline">\(k\)</span>-Anonimlik <span class="citation" data-cites="sweeney2002k">(<a href="#ref-sweeney2002k" role="doc-biblioref">12</a>)</span></h3>
+<p>Bir veri kümesi <span class="math inline">\(k\)</span>-anonim ise, her kayıt <strong>dolaylı tanımlayıcılarla</strong> en az <span class="math inline">\(k-1\)</span> başka kayıttan ayırt edilemez.</p>
+<p>Örneğin <span class="math inline">\(k=5\)</span> ise, her benzersiz (yaş, cinsiyet, posta kodu) kombinasyonu <strong>en az 5 kişide</strong> olmalıdır. Sweeney çalışması <span class="math inline">\(k=1\)</span> olduğunda risk maksimumdur.</p>
+<p>Pratikte <span class="math inline">\(k=5\)</span> minimum, <span class="math inline">\(k=10-15\)</span> tercih edilir <span class="citation" data-cites="elemam2013anonymizing">(<a href="#ref-elemam2013anonymizing" role="doc-biblioref">13</a>)</span>.</p>
+</section>
+<section id="ell-çeşitlilik-machanavajjhala2007ldiversity" class="level3">
+<h3 class="anchored" data-anchor-id="ell-çeşitlilik-machanavajjhala2007ldiversity"><span class="math inline">\(\ell\)</span>-Çeşitlilik <span class="citation" data-cites="machanavajjhala2007ldiversity">(<a href="#ref-machanavajjhala2007ldiversity" role="doc-biblioref">14</a>)</span></h3>
+<p><span class="math inline">\(k\)</span>-anonim ama hassas değişkende çeşitlilik yoksa risk hâlâ vardır. Örneğin: 5 kişilik bir grupta hepsi aynı tanıyı taşıyorsa, “bu kişi de o tanıyı taşıyor” çıkarımı yapılabilir.</p>
+<p><span class="math inline">\(\ell\)</span>-çeşitlilik, her grupta hassas değişken için en az <span class="math inline">\(\ell\)</span> farklı değer olmasını şart koşar.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">İpucu</span>Pratikte ne yapayım?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Klinisyen olarak elinizde 50-200 hastalık örneklem var. Tam <span class="math inline">\(k\)</span>-anonimlik için R’da <code>sdcMicro</code> paketini kullanabilirsiniz. Ancak çoğu durumda <strong>doğrudan tanımlayıcıları kaldırmak + tarih/posta kodunu kaba grupları çevirmek + dosyayı şifrelemek</strong> yeterli koruma sağlar.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="pratik-mimari-anahtar-dosya-çalışma-dosyası" class="level2">
+<h2 class="anchored" data-anchor-id="pratik-mimari-anahtar-dosya-çalışma-dosyası">1.5 Pratik Mimari — Anahtar Dosya / Çalışma Dosyası</h2>
+<p>Akademik standart yaklaşım <span class="citation" data-cites="elemam2013anonymizing">(<a href="#ref-elemam2013anonymizing" role="doc-biblioref">13</a>)</span>:</p>
+<pre><code>┌─────────────────────────────────────┐
+│  ORİJİNAL VERİ                      │
+│  (ad, tc, telefon, klinik veri)     │
+│  🔐 BitLocker'lı klasör             │
+└──────────────┬──────────────────────┘
+               │  ikiye böl
+               ▼
+   ┌───────────┴───────────┐
+   │                       │
+┌──▼──────────┐    ┌───────▼──────────┐
+│ KEY FILE    │    │ ANONİM DOSYA     │
+│ anon_id +   │    │ anon_id +        │
+│ ad + tc +   │    │ klinik veri      │
+│ telefon ... │    │ (kimlik yok)     │
+│ 🔐🔐 KASA   │    │ 🔓 çalışma alanı │
+└─────────────┘    └──────────────────┘
+   sadece sen          biyoistatistikçi,
+                       OpenRefine, R analizi</code></pre>
+<p>İki dosya <strong>ayrı yerlerde</strong> durur:</p>
+<ul>
+<li><strong>Key file:</strong> şifreli klasörde, paylaşılmaz, yedeklenir</li>
+<li><strong>Anonim dosya:</strong> çalışma alanında, paylaşılabilir</li>
+</ul>
+<p>İhtiyaç halinde <code>anon_id</code> üzerinden eşleştirme (join) yapılır.</p>
+</section>
+<section id="excel-ile-uygulama" class="level2">
+<h2 class="anchored" data-anchor-id="excel-ile-uygulama">1.6 Excel ile Uygulama</h2>
+<p>Basit bir senaryo: 20 hastalık dosyamız var, kimliksizleştirelim.</p>
+<section id="adım-1-yeni-id-sütunu" class="level3">
+<h3 class="anchored" data-anchor-id="adım-1-yeni-id-sütunu">Adım 1 — Yeni ID Sütunu</h3>
+<p>Orijinal dosyayı açın, en sola yeni bir sütun ekleyin: <code>anon_id</code>.</p>
+<p>A2 hücresine:</p>
+<pre><code>="PID-" &amp; TEXT(ROW()-1, "0000")</code></pre>
+<p>Aşağı sürükleyin: PID-0001, PID-0002, …</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Not</span>Daha güvenli ID üretmek
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sıralı sayı tahmin edilebilir. Daha güvenli bir yöntem rastgele 8 haneli ID:</p>
+<pre><code>="PID-" &amp; TEXT(RANDBETWEEN(10000000, 99999999), "00000000")</code></pre>
+<p>Sonra <strong>Özel Yapıştır → Yalnızca Değer</strong> ile sabitleyin (yoksa her açışta değişir).</p>
+</div>
+</div>
+</section>
+<section id="adım-2-ikiye-böl" class="level3">
+<h3 class="anchored" data-anchor-id="adım-2-ikiye-böl">Adım 2 — İkiye Böl</h3>
+<p>Dosyayı <strong>iki farklı dosyaya</strong> kopyalayın:</p>
+<p><strong><code>key-file.xlsx</code></strong> — sadece kimlik sütunları:</p>
+<pre><code>anon_id   ad        soyad      sahte_kimlik_no    telefon          adres
+PID-0001  Marcus    Aurelius   PT-0001-AB         +99-555-0001    12 Sample Street
+PID-0002  Lucia     Ventura    PT-0002-CD         +99-555-0002    45 Example Road
+...</code></pre>
+<p><strong><code>veri-anonim.xlsx</code></strong> — sadece klinik bilgi:</p>
+<pre><code>anon_id   dogum_yili  cinsiyet  tani         fev1   fvc   smoking_pack_year
+PID-0001  1958        Erkek     KOAH         1.8    2.6   30
+PID-0002  1962        Kadın     KOAH-Astım   1.6    2.2    0
+...</code></pre>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Uyarı</span>Tarihler
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Doğum tarihinden <strong>sadece yıl</strong> tutuldu (HIPAA Safe Harbor 3. madde). Yatış tarihi de aynı şekilde işlenmeli ya da silinmeli.</p>
+</div>
+</div>
+</section>
+<section id="adım-3-eşleştirme" class="level3">
+<h3 class="anchored" data-anchor-id="adım-3-eşleştirme">Adım 3 — Eşleştirme</h3>
+<p>Sonradan “PID-0001 kim?” diye baktığınızda VLOOKUP:</p>
+<pre><code>=VLOOKUP("PID-0001", key-file.xlsx!A:F, 2, FALSE)</code></pre>
+<p>→ “Marcus” döner.</p>
+<p>Excel ile yöntem <strong>basit ama hatalara açıktır</strong>: sütun unutmak, yedeklemeyi karıştırmak. R ile yapmak daha güvenlidir.</p>
+</section>
+</section>
+<section id="r-ile-otomatik-kimliksizleştirme" class="level2">
+<h2 class="anchored" data-anchor-id="r-ile-otomatik-kimliksizleştirme">1.7 R ile Otomatik Kimliksizleştirme</h2>
+<p>Aşağıdaki şablon, bir Excel/CSV dosyasını alıp <strong>iki dosyaya bölen</strong> ve <strong>anon_id</strong> üreten tam bir akıştır.</p>
+<section id="paketler" class="level3">
+<h3 class="anchored" data-anchor-id="paketler">1.7.1 Paketler</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"readr"</span>, <span class="st">"writexl"</span>, <span class="st">"dplyr"</span>, <span class="st">"digest"</span>, <span class="st">"openssl"</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)      <span class="co"># CSV okuma</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(writexl)    <span class="co"># Excel yazma</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)      <span class="co"># Veri manipülasyonu</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(digest)     <span class="co"># Hash fonksiyonları</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openssl)    <span class="co"># SHA-256</span></span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="veriyi-yükle" class="level3">
+<h3 class="anchored" data-anchor-id="veriyi-yükle">1.7.2 Veriyi Yükle</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>veri <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ornek-tanimlayici-veri.csv"</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(veri)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] "hasta_id"        "ad"              "soyad"          </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># [4] "sahte_kimlik_no" "dogum_tarihi"    "telefon"        </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># [7] "adres"           "posta_kodu"      "sehir"          </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># [10] "cinsiyet"       "tani"            "yatis_tarihi"   </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># [13] "fev1"           "fvc"             "smoking_pack_year"</span></span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="tanımlayıcıları-belirle" class="level3">
+<h3 class="anchored" data-anchor-id="tanımlayıcıları-belirle">1.7.3 Tanımlayıcıları Belirle</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Doğrudan tanımlayıcılar — anahtar dosyaya gidecek</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dogrudan_tanimlayicilar <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ad"</span>, <span class="st">"soyad"</span>, <span class="st">"sahte_kimlik_no"</span>, </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"telefon"</span>, <span class="st">"adres"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Dolaylı tanımlayıcılar — dönüştürülecek</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>dolayli_tanimlayicilar <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dogum_tarihi"</span>, <span class="st">"yatis_tarihi"</span>, </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"posta_kodu"</span>, <span class="st">"sehir"</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Klinik (analizde kalacak)</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>klinik <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"cinsiyet"</span>, <span class="st">"tani"</span>, <span class="st">"fev1"</span>, <span class="st">"fvc"</span>, <span class="st">"smoking_pack_year"</span>)</span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="yeni-anon-id-üret" class="level3">
+<h3 class="anchored" data-anchor-id="yeni-anon-id-üret">1.7.4 Yeni Anon ID Üret</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)  <span class="co"># tekrarlanabilirlik için</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Rastgele 8 haneli ID</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>veri <span class="ot">&lt;-</span> veri <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">anon_id =</span> <span class="fu">sprintf</span>(<span class="st">"PID-%08d"</span>, </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">sample</span>(<span class="dv">10000000</span><span class="sc">:</span><span class="dv">99999999</span>, <span class="fu">n</span>(), </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">replace =</span> <span class="cn">FALSE</span>)))</span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="tarihleri-yıla-çevir-hipaa-safe-harbor" class="level3">
+<h3 class="anchored" data-anchor-id="tarihleri-yıla-çevir-hipaa-safe-harbor">1.7.5 Tarihleri Yıla Çevir (HIPAA Safe Harbor)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>veri <span class="ot">&lt;-</span> veri <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">dogum_yili  =</span> <span class="fu">as.numeric</span>(<span class="fu">format</span>(<span class="fu">as.Date</span>(dogum_tarihi), <span class="st">"%Y"</span>)),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">yatis_yili  =</span> <span class="fu">as.numeric</span>(<span class="fu">format</span>(<span class="fu">as.Date</span>(yatis_tarihi), <span class="st">"%Y"</span>))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="posta-kodunu-kabalaştır" class="level3">
+<h3 class="anchored" data-anchor-id="posta-kodunu-kabalaştır">1.7.6 Posta Kodunu Kabalaştır</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tam posta kodu yerine sadece ilk 2 karakter</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>veri <span class="ot">&lt;-</span> veri <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">posta_kodu_kaba =</span> <span class="fu">substr</span>(posta_kodu, <span class="dv">1</span>, <span class="dv">2</span>))</span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="anahtar-ve-anonim-dosyaları-oluştur" class="level3">
+<h3 class="anchored" data-anchor-id="anahtar-ve-anonim-dosyaları-oluştur">1.7.7 Anahtar ve Anonim Dosyaları Oluştur</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Anahtar dosya — orijinal kimlik bilgileri + anon_id</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>key_file <span class="ot">&lt;-</span> veri <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(anon_id, <span class="fu">all_of</span>(dogrudan_tanimlayicilar),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>         dogum_tarihi, yatis_tarihi, posta_kodu, sehir)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Anonim dosya — sadece anon_id + güvenli değişkenler</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>anonim_dosya <span class="ot">&lt;-</span> veri <span class="sc">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(anon_id, dogum_yili, cinsiyet, tani, </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>         posta_kodu_kaba, fev1, fvc, smoking_pack_year)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Kaydet</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write_xlsx</span>(key_file, <span class="st">"key-file.xlsx"</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(anonim_dosya, <span class="st">"veri-anonim.csv"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"✅ İki dosya oluşturuldu.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"⚠ key-file.xlsx şifreli klasöre taşınmalı!</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="eşleştirme-match-sonradan-kullanım" class="level3">
+<h3 class="anchored" data-anchor-id="eşleştirme-match-sonradan-kullanım">1.7.8 Eşleştirme (Match) — Sonradan Kullanım</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>key  <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"key-file.xlsx"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>anon <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"veri-anonim.csv"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># anon_id üzerinden birleştir</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>birlesik <span class="ot">&lt;-</span> anon <span class="sc">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(key <span class="sc">%&gt;%</span> <span class="fu">select</span>(anon_id, ad, soyad), <span class="at">by =</span> <span class="st">"anon_id"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Geçici kullanım sonrası SİL</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(birlesik)</span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Önemli</span>Birleştirilmiş veriyi kalıcı tutmayın
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ad ile klinik veriyi birleştirdiğinizde elinizde <strong>yeniden tanımlanabilir</strong> veri vardır. Kullandıktan sonra sıfırdan üretilebileceği için saklamayın.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="hashleme-geri-dönülemez-eşleştirme" class="level2">
+<h2 class="anchored" data-anchor-id="hashleme-geri-dönülemez-eşleştirme">1.8 Hashleme — Geri Dönülemez Eşleştirme</h2>
+<p>Bazen kurumlar arası çalışmada şu sorun çıkar: “Aynı hasta hem hastane A hem de hastane B’de mi?” — ama T.C. kimlik paylaşılamaz.</p>
+<p>Çözüm: <strong>Salted Hash (Tuzlu Özet)</strong>.</p>
+<section id="mantık" class="level3">
+<h3 class="anchored" data-anchor-id="mantık">1.8.1 Mantık</h3>
+<pre><code>TC: 12345678901
++ Salt (gizli ortak tuz): "AKDENIZ-2024-PROJESI"
+↓ SHA-256
+Hash: 7f3a2b...e9d1 (64 karakter)</code></pre>
+<p>İki kurum <strong>aynı tuz</strong> ile hash üretirse:</p>
+<ul>
+<li>Aynı TC → aynı hash → eşleşme bulunur</li>
+<li>Hash’ten TC geri çıkarılamaz <span class="citation" data-cites="nist2017hashing">(<a href="#ref-nist2017hashing" role="doc-biblioref">15</a>)</span></li>
+</ul>
+</section>
+<section id="rda-uygulama" class="level3">
+<h3 class="anchored" data-anchor-id="rda-uygulama">1.8.2 R’da Uygulama</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openssl)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Salt'i paylaş ama dışarı sızdırma</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>SALT <span class="ot">&lt;-</span> <span class="st">"ProjeKodu-2024-GizliTuz-v1"</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># TC'yi hashle</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>veri <span class="ot">&lt;-</span> veri <span class="sc">%&gt;%</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">tc_hash =</span> <span class="fu">sha256</span>(<span class="fu">paste0</span>(sahte_kimlik_no, SALT))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Sadece hash'i tut, orijinali sil</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>veri<span class="sc">$</span>sahte_kimlik_no <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="saltin-kritik-önemi" class="level3">
+<h3 class="anchored" data-anchor-id="saltin-kritik-önemi">1.8.3 Salt’in Kritik Önemi</h3>
+<p>Tuzsuz hash <strong>kırılabilir</strong>. Saldırgan tüm olası TC’leri (10^11 olasılık) hash’leyip rainbow table yapabilir <span class="citation" data-cites="hellman1980cryptanalytic">(<a href="#ref-hellman1980cryptanalytic" role="doc-biblioref">16</a>)</span>.</p>
+<p>Tuzlu hash bu saldırıyı önler:</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">İpucu</span>İyi tuz nasıl olur?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>En az 16 karakter, rastgele</li>
+<li>Sadece proje sorumlusunda</li>
+<li>Veri ile birlikte saklanmaz</li>
+<li>Proje bittiğinde silinir</li>
+</ul>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Güvenli rastgele tuz üret</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>SALT <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">sample</span>(<span class="fu">c</span>(letters, LETTERS, <span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>), <span class="dv">32</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bunu güvenli not defterine kaydet</span></span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="hmac-daha-sağlam-yöntem" class="level3">
+<h3 class="anchored" data-anchor-id="hmac-daha-sağlam-yöntem">1.8.4 HMAC — Daha Sağlam Yöntem</h3>
+<p>Kriptografik olarak daha sağlam yöntem <strong>HMAC-SHA256</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openssl)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>veri <span class="ot">&lt;-</span> veri <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tc_hmac =</span> <span class="fu">sha256</span>(sahte_kimlik_no, <span class="at">key =</span> SALT)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></div>
+<p>HMAC, salt’in hash içine güvenli şekilde dahil edilmesini sağlar.</p>
+</section>
+</section>
+<section id="dosya-şifreleme-üç-pratik-yöntem" class="level2">
+<h2 class="anchored" data-anchor-id="dosya-şifreleme-üç-pratik-yöntem">1.9 Dosya Şifreleme — Üç Pratik Yöntem</h2>
+<p>Anahtar dosya <strong>mutlaka şifrelenmelidir</strong>. Üç ana seçenek:</p>
+<section id="bitlocker-windows" class="level3">
+<h3 class="anchored" data-anchor-id="bitlocker-windows">1.9.1 BitLocker (Windows)</h3>
+<p>Tüm sürücü/klasör şifreleme:</p>
+<ol type="1">
+<li><strong>Bu PC</strong> → şifrelemek istediğiniz sürücüye sağ tık → <strong>“BitLocker’ı aç”</strong></li>
+<li>Bir şifre belirleyin (en az 12 karakter, mix)</li>
+<li>Kurtarma anahtarını <strong>yazıcı çıktısı olarak güvenli bir yerde</strong> saklayın</li>
+<li>“Yeni şifreleme modu” seçin</li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Uyarı</span>Kurtarma anahtarı önemli!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>BitLocker şifresini unutursanız, kurtarma anahtarı olmadan <strong>veri kaybolur</strong>. Yazılı çıktı + şifreli bulut yedek (örn. password manager) önerilir.</p>
+</div>
+</div>
+<p><strong>Avantaj:</strong> Tüm klasördeki her dosya otomatik şifreli<br>
+<strong>Dezavantaj:</strong> Sadece Windows Pro/Enterprise’da</p>
+</section>
+<section id="zip-şifreli-arşiv-en-taşınabilir" class="level3">
+<h3 class="anchored" data-anchor-id="zip-şifreli-arşiv-en-taşınabilir">1.9.2 7-Zip Şifreli Arşiv (en taşınabilir)</h3>
+<p>Tek dosyayı şifreli ZIP yapma:</p>
+<ol type="1">
+<li><strong>7-Zip</strong> indir: <a href="https://www.7-zip.org/" class="uri">https://www.7-zip.org/</a></li>
+<li>Dosyaya sağ tık → <strong>7-Zip → Add to archive</strong></li>
+<li>Ayarlar:
+<ul>
+<li><strong>Archive format:</strong> <code>7z</code></li>
+<li><strong>Encryption method:</strong> <code>AES-256</code></li>
+<li><strong>Encrypt file names:</strong> ✅ (dosya isimlerini de şifreler)</li>
+<li><strong>Password:</strong> güçlü şifre</li>
+</ul></li>
+</ol>
+<pre><code>key-file.xlsx → key-file.7z (şifreli)</code></pre>
+<p>Açmak için aynı şifre gerekir, başka kimse açamaz <span class="citation" data-cites="aes2001fips">(<a href="#ref-aes2001fips" role="doc-biblioref">17</a>)</span>.</p>
+<p><strong>Avantaj:</strong> Her platformda çalışır, taşınabilir<br>
+<strong>Dezavantaj:</strong> Her açış-kapanışta şifre girmek</p>
+</section>
+<section id="veracrypt-en-sağlam" class="level3">
+<h3 class="anchored" data-anchor-id="veracrypt-en-sağlam">1.9.3 VeraCrypt (en sağlam)</h3>
+<p>“Kasa” mantığı — sanal bir şifreli sürücü oluşturma:</p>
+<ol type="1">
+<li><strong>VeraCrypt</strong> indir: <a href="https://veracrypt.fr/" class="uri">https://veracrypt.fr/</a></li>
+<li><strong>Create Volume</strong> → “Encrypted file container”</li>
+<li>Boyut belirle (örn. 100 MB), şifre belirle</li>
+<li>Açıldığında sanal disk gibi kullanılır (örn. <code>Z:\</code>)</li>
+<li>Disk üzerinde her dosya otomatik şifreli</li>
+</ol>
+<p><strong>Avantaj:</strong> En güçlü, full deniability özelliği var, açık kaynak<br>
+<strong>Dezavantaj:</strong> Öğrenme eğrisi var</p>
+</section>
+<section id="pratik-karar-tablosu" class="level3">
+<h3 class="anchored" data-anchor-id="pratik-karar-tablosu">1.9.4 Pratik Karar Tablosu</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Senaryo</th>
+<th>Önerilen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tek bir anahtar dosya</td>
+<td>7-Zip AES-256</td>
+</tr>
+<tr class="even">
+<td>Tüm proje klasörü</td>
+<td>BitLocker</td>
+</tr>
+<tr class="odd">
+<td>Çoklu kullanıcı paylaşımı</td>
+<td>VeraCrypt container</td>
+</tr>
+<tr class="even">
+<td>Bulut yedek</td>
+<td>7-Zip + bulut</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="klinik-veri-paylaşım-kontrol-listesi" class="level2">
+<h2 class="anchored" data-anchor-id="klinik-veri-paylaşım-kontrol-listesi">1.10 Klinik Veri Paylaşım Kontrol Listesi</h2>
+<p>Veriyi başka birine (biyoistatistikçi, ortak araştırmacı) göndermeden önce:</p>
+<section id="a.-anonim-dosya-içeriği" class="level3">
+<h3 class="anchored" data-anchor-id="a.-anonim-dosya-içeriği">A. Anonim Dosya İçeriği</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Ad, soyad sütunları yok</label></li>
+<li><label><input type="checkbox">T.C. kimlik / MRN yok</label></li>
+<li><label><input type="checkbox">Telefon, e-posta, adres yok</label></li>
+<li><label><input type="checkbox">Tam doğum tarihi yerine sadece yıl</label></li>
+<li><label><input type="checkbox">Tam posta kodu yerine ilk 2 karakter (ya da il)</label></li>
+<li><label><input type="checkbox">Tam yatış-çıkış tarihleri yerine yıl</label></li>
+<li><label><input type="checkbox"><code>anon_id</code> benzersiz, kimliği geri vermiyor</label></li>
+</ul>
+</section>
+<section id="b.-anahtar-dosya-güvenliği" class="level3">
+<h3 class="anchored" data-anchor-id="b.-anahtar-dosya-güvenliği">B. Anahtar Dosya Güvenliği</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Anahtar dosya <strong>ayrı klasörde</strong></label></li>
+<li><label><input type="checkbox">Klasör BitLocker / VeraCrypt ile şifreli</label></li>
+<li><label><input type="checkbox">Anahtar dosya <strong>paylaşılmadı</strong></label></li>
+<li><label><input type="checkbox">Yedek de şifreli</label></li>
+<li><label><input type="checkbox">Hash kullanıldıysa salt güvenli yerde</label></li>
+</ul>
+</section>
+<section id="c.-etik-ve-yasal" class="level3">
+<h3 class="anchored" data-anchor-id="c.-etik-ve-yasal">C. Etik ve Yasal</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Etik kurul onayı kapsamında</label></li>
+<li><label><input type="checkbox">Hasta onamı kapsamında (gerekiyorsa)</label></li>
+<li><label><input type="checkbox">KVKK / GDPR uyumlu işleme</label></li>
+<li><label><input type="checkbox">Veri saklama süresi tanımlı</label></li>
+</ul>
+</section>
+<section id="d.-teknik" class="level3">
+<h3 class="anchored" data-anchor-id="d.-teknik">D. Teknik</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Excel formülleri silindi (hassas hesaplama içerebilir)</label></li>
+<li><label><input type="checkbox">Gizli sütun/satır yok (Excel’de “hidden”)</label></li>
+<li><label><input type="checkbox">Tablonun altında yorum/not yok</label></li>
+<li><label><input type="checkbox">Excel metadata (yazar, son düzenleyen) temizlendi:</label>
+<ul>
+<li>File → Info → Check for Issues → Inspect Document → Remove All</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="yaygın-hatalar" class="level2">
+<h2 class="anchored" data-anchor-id="yaygın-hatalar">1.11 Yaygın Hatalar</h2>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Uyarı</span>Bu hataları yapmayın
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>1. Anahtar dosyayı bulutta tutmak (şifresiz)</strong><br>
+Google Drive/OneDrive otomatik yedekleme açıksa key file ister istemez bulutta. Klasörü senkronizasyondan çıkarın.</p>
+<p><strong>2. Aynı bilgisayarda key + anonim</strong><br>
+Mümkünse anahtar dosyayı <strong>ayrı bir</strong> şifrelenmiş USB’de tutun.</p>
+<p><strong>3. E-posta ile gönderme</strong><br>
+E-posta uçtan uca şifresizdir. Akademik veri için <strong>SFTP</strong> veya kurumsal güvenli paylaşım sistemleri kullanın.</p>
+<p><strong>4. “Anonim” sandığınız veriyi yayınlamak</strong><br>
+Tarih + posta kodu + yaş yeterli olabilir. Yayınlamadan önce bağımsız bir uzmandan görüş alın.</p>
+<p><strong>5. Hash’i tuzsuz yapmak</strong><br>
+Tuzsuz SHA-256 birkaç saatte kırılabilir. Mutlaka salt ekleyin.</p>
+<p><strong>6. Salt’i veriyle birlikte saklamak</strong><br>
+“<code>tc | hash | salt</code>” sütunlarını yan yana koyarsanız tuz hiçbir işe yaramaz.</p>
+<p><strong>7. Eski yedekleri kontrol etmemek</strong><br>
+Önceki sürümlerde silinmemiş kimlik olabilir. Tüm yedekleri gözden geçirin.</p>
+</div>
+</div>
+</section>
+<section id="uygulamalı-egzersiz" class="level2">
+<h2 class="anchored" data-anchor-id="uygulamalı-egzersiz">1.12 Uygulamalı Egzersiz</h2>
+<p>Bu rehbere eşlik eden örnek dosya: <a href="../ornek-veri/ornek-tanimlayici-veri.csv"><strong>ornek-tanimlayici-veri.csv</strong></a></p>
+<p>20 satır, kasıtlı sahte verili (tarihi Roma isimleri, sahte ID’ler, “+99” telefon kodu, “Sample Street” adresleri).</p>
+<section id="egzersiz-görevleri" class="level3">
+<h3 class="anchored" data-anchor-id="egzersiz-görevleri">Egzersiz Görevleri</h3>
+<ol type="1">
+<li>CSV dosyasını R’da yükleyin</li>
+<li>Yeni <code>anon_id</code> üretin (rastgele PID-XXXXXXXX)</li>
+<li>Doğum tarihinden yıl bilgisini çıkarın</li>
+<li>Ad-soyad-telefon-adres sütunlarını kaldırın</li>
+<li>Posta kodunu ilk 2 karaktere kabalaştırın</li>
+<li>T.C. yerine geçen <code>sahte_kimlik_no</code> sütununu <strong>salted SHA-256</strong> ile hashleyin</li>
+<li>İki dosya oluşturun: <code>key-file.xlsx</code>, <code>veri-anonim.csv</code></li>
+<li><code>key-file.xlsx</code>’i 7-Zip ile şifreli <code>.7z</code>’ye çevirin</li>
+<li>Bonus: <code>anon_id</code> üzerinden anonim veriyi key-file ile join edip Marcus Aurelius’un <code>fev1</code> değerini bulun</li>
+<li>Bonus: Duplikatı (Marcus Aurelius iki kez) tespit edin (<code>janitor::get_dupes(ad, soyad, dogum_tarihi)</code>)</li>
+</ol>
+<p>Bu egzersizi tamamladığınızda kimliksizleştirme sürecinin <strong>tüm ana adımlarını</strong> uygulamış olursunuz.</p>
+</section>
+</section>
+<section id="bu-bölümün-özeti" class="level2">
+<h2 class="anchored" data-anchor-id="bu-bölümün-özeti">1.13 Bu Bölümün Özeti</h2>
+<ul>
+<li><strong>Anonim, kimliksiz, sahte adlandırılmış</strong> terimlerinin yasal sonuçları farklı</li>
+<li>HIPAA Safe Harbor 18 doğrudan tanımlayıcıyı tanımlar; KVKK ve GDPR benzer yaklaşım benimser</li>
+<li><span class="math inline">\(k\)</span>-anonimlik ve <span class="math inline">\(\ell\)</span>-çeşitlilik yeniden tanımlama riskini ölçer</li>
+<li>Pratik mimari: <strong>Anahtar dosya</strong> (kasada) + <strong>anonim dosya</strong> (analiz)</li>
+<li>Kurumlar arası eşleştirme için <strong>salted SHA-256</strong> veya <strong>HMAC</strong></li>
+<li>Anahtar dosya <strong>mutlaka</strong> BitLocker, 7-Zip AES-256 veya VeraCrypt ile şifrelenir</li>
+<li>Veriyi paylaşmadan önce 4 başlıklı kontrol listesi (içerik, güvenlik, etik, teknik)</li>
+</ul>
+</section>
+<section id="kaynakça" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="kaynakça">Kaynakça</h2>
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-gdpr2016" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">European Parliament and Council of the European Union. Regulation (EU) 2016/679 (General Data Protection Regulation) [Internet]. 2016. Erişim adresi: <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">https://eur-lex.europa.eu/eli/reg/2016/679/oj</a></div>
+</div>
+<div id="ref-sweeney2000simple" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Sweeney L. Simple Demographics Often Identify People Uniquely. Pittsburgh: Carnegie Mellon University, Data Privacy Working Paper; 2000. Report no.: 3.</div>
+</div>
+<div id="ref-iso20889" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">International Organization for Standardization. <span>ISO/IEC 20889:2018 Privacy Enhancing Data De-identification Terminology and Classification of Techniques</span>. 2018.</div>
+</div>
+<div id="ref-garfinkel2023nist" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Garfinkel SL. <span>De-Identifying Government Datasets: Techniques and Governance</span>. National Institute of Standards; Technology; 2023. Report NIST SP 800-188. doi:<a href="https://doi.org/10.6028/NIST.SP.800-188">10.6028/NIST.SP.800-188</a></div>
+</div>
+<div id="ref-article29wp216" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Article 29 Data Protection Working Party. Opinion 05/2014 on Anonymisation Techniques (WP216) [Internet]. 2014. Erişim adresi: <a href="https://ec.europa.eu/justice/article-29/documentation/">https://ec.europa.eu/justice/article-29/documentation/</a></div>
+</div>
+<div id="ref-hipaa2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">U.S. Department of Health and Human Services. Guidance Regarding Methods for De-identification of Protected Health Information in Accordance with the Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule [Internet]. 2013. Erişim adresi: <a href="https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/">https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/</a></div>
+</div>
+<div id="ref-kvkk2016" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline">Türkiye Büyük Millet Meclisi. <span>Kişisel Verilerin Korunması Kanunu (Kanun No: 6698)</span> [Internet]. 2016. Erişim adresi: <a href="https://www.mevzuat.gov.tr/MevzuatMetin/1.5.6698.pdf">https://www.mevzuat.gov.tr/MevzuatMetin/1.5.6698.pdf</a></div>
+</div>
+<div id="ref-kvkk_rehber2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline">Kişisel Verileri Koruma Kurumu. <span>Kişisel Verilerin Anonim Hale Getirilmesi Rehberi</span> [Internet]. 2019. Erişim adresi: <a href="https://www.kvkk.gov.tr/yayinlar/">https://www.kvkk.gov.tr/yayinlar/</a></div>
+</div>
+<div id="ref-barbaro2006face" class="csl-entry" role="listitem">
+<div class="csl-left-margin">9. </div><div class="csl-right-inline">Barbaro M, Zeller T. A Face is Exposed for AOL Searcher No. 4417749 [Internet]. The New York Times; 2006. Erişim adresi: <a href="https://www.nytimes.com/2006/08/09/technology/09aol.html">https://www.nytimes.com/2006/08/09/technology/09aol.html</a></div>
+</div>
+<div id="ref-narayanan2008robust" class="csl-entry" role="listitem">
+<div class="csl-left-margin">10. </div><div class="csl-right-inline">Narayanan A, Shmatikov V. Robust De-anonymization of Large Sparse Datasets. Içinde: 2008 IEEE Symposium on Security and Privacy (SP 2008). 2008. s. 111-25. doi:<a href="https://doi.org/10.1109/SP.2008.33">10.1109/SP.2008.33</a></div>
+</div>
+<div id="ref-elemam2011re" class="csl-entry" role="listitem">
+<div class="csl-left-margin">11. </div><div class="csl-right-inline">El Emam K, Jonker E, Arbuckle L, Malin B. A Systematic Review of Re-Identification Attacks on Health Data. PLoS ONE. 2011;6(12):e28071. doi:<a href="https://doi.org/10.1371/journal.pone.0028071">10.1371/journal.pone.0028071</a></div>
+</div>
+<div id="ref-sweeney2002k" class="csl-entry" role="listitem">
+<div class="csl-left-margin">12. </div><div class="csl-right-inline">Sweeney L. k-anonymity: A Model for Protecting Privacy. International Journal of Uncertainty, Fuzziness and Knowledge-Based Systems. 2002;10(5):557-70. doi:<a href="https://doi.org/10.1142/S0218488502001648">10.1142/S0218488502001648</a></div>
+</div>
+<div id="ref-elemam2013anonymizing" class="csl-entry" role="listitem">
+<div class="csl-left-margin">13. </div><div class="csl-right-inline">El Emam K, Arbuckle L. Anonymizing Health Data: Case Studies and Methods to Get You Started. Sebastopol, CA: O’Reilly Media; 2013.</div>
+</div>
+<div id="ref-machanavajjhala2007ldiversity" class="csl-entry" role="listitem">
+<div class="csl-left-margin">14. </div><div class="csl-right-inline">Machanavajjhala A, Kifer D, Gehrke J, Venkitasubramaniam M. l-Diversity: Privacy Beyond k-Anonymity. ACM Transactions on Knowledge Discovery from Data. 2007;1(1):3-es. doi:<a href="https://doi.org/10.1145/1217299.1217302">10.1145/1217299.1217302</a></div>
+</div>
+<div id="ref-nist2017hashing" class="csl-entry" role="listitem">
+<div class="csl-left-margin">15. </div><div class="csl-right-inline">National Institute of Standards and Technology. <span>Secure Hash Standard (SHS) — FIPS PUB 180-4</span>. NIST; 2015. doi:<a href="https://doi.org/10.6028/NIST.FIPS.180-4">10.6028/NIST.FIPS.180-4</a></div>
+</div>
+<div id="ref-hellman1980cryptanalytic" class="csl-entry" role="listitem">
+<div class="csl-left-margin">16. </div><div class="csl-right-inline">Hellman ME. A Cryptanalytic Time-Memory Trade-Off. IEEE Transactions on Information Theory. 1980;26(4):401-6. doi:<a href="https://doi.org/10.1109/TIT.1980.1056220">10.1109/TIT.1980.1056220</a></div>
+</div>
+<div id="ref-aes2001fips" class="csl-entry" role="listitem">
+<div class="csl-left-margin">17. </div><div class="csl-right-inline">National Institute of Standards and Technology. <span>Advanced Encryption Standard (AES) — FIPS PUB 197</span>. NIST; 2001. doi:<a href="https://doi.org/10.6028/NIST.FIPS.197">10.6028/NIST.FIPS.197</a></div>
+</div>
+</div>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Başa dön</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kopyalandı");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kopyalandı");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/drmuammer\.github\.io\/veri-seti-guvenligi\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="🏠 Ana Sayfa">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">🏠 Ana Sayfa</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Muammer Beslen, MD · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/drmuammer/veri-seti-guvenligi/edit/main/rehber/01-kimliksizlestirme.qmd" class="toc-action"><i class="bi bi-github"></i>Bu sayfayı düzenle</a></li><li><a href="https://github.com/drmuammer/veri-seti-guvenligi/issues/new" class="toc-action"><i class="bi empty"></i>Sorun bildir</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/drmuammer/veri-seti-guvenligi">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://muammerbeslen.com">
+<p>muammerbeslen.com</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
